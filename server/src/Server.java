@@ -1,5 +1,7 @@
 package server.src;
 
+import server.src.ServerImpl;
+
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 
