@@ -16,5 +16,11 @@ public class Article implements Serializable {
         this.quantiteStock = quantiteStock;
     }
 
-    // Getters et setters...
+    public int getReference() {
+        return reference;
+    }
+
+    public int getQuantite() {
+        return quantiteStock;
+    }
 }

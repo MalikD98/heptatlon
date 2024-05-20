@@ -15,7 +15,6 @@ public class Seeder {
             seedArticles(conn);
             seedCommandes(conn);
             seedQuantiteCommandes(conn);
-            seedFactures(conn);
             System.out.println("Seeding terminé avec succès !");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -60,20 +59,18 @@ public class Seeder {
     }
 
     private static void seedCommandes(Connection conn) throws SQLException {
-        String sql = "INSERT INTO commandes (reference, client, statut, date_creation, date_modification) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO commandes (reference, client, mode_paiement, date_creation) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, 1);
             stmt.setString(2, "John Doe");
-            stmt.setString(3, "En cours");
+            stmt.setString(3, "Credit Card");
             stmt.setTimestamp(4, java.sql.Timestamp.valueOf("2024-05-10 10:00:00"));
-            stmt.setTimestamp(5, java.sql.Timestamp.valueOf("2024-05-10 10:00:00"));
             stmt.addBatch();
 
             stmt.setInt(1, 2);
             stmt.setString(2, "Jane Smith");
-            stmt.setString(3, "Complétée");
+            stmt.setString(3, "Cash");
             stmt.setTimestamp(4, java.sql.Timestamp.valueOf("2024-05-11 11:00:00"));
-            stmt.setTimestamp(5, java.sql.Timestamp.valueOf("2024-05-11 11:00:00"));
             stmt.addBatch();
 
             stmt.executeBatch();
@@ -95,23 +92,6 @@ public class Seeder {
 
             stmt.setInt(1, 2);
             stmt.setInt(2, 2);
-            stmt.setInt(3, 2);
-            stmt.addBatch();
-
-            stmt.executeBatch();
-        }
-    }
-
-    private static void seedFactures(Connection conn) throws SQLException {
-        String sql = "INSERT INTO factures (mode_paiement, date_facturation, commande_reference) VALUES (?, ?, ?)";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, "Credit Card");
-            stmt.setTimestamp(2, java.sql.Timestamp.valueOf("2024-05-10 12:00:00"));
-            stmt.setInt(3, 1);
-            stmt.addBatch();
-
-            stmt.setString(1, "Cash");
-            stmt.setTimestamp(2, java.sql.Timestamp.valueOf("2024-05-11 13:00:00"));
             stmt.setInt(3, 2);
             stmt.addBatch();
 
