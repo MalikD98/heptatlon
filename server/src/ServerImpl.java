@@ -5,8 +5,12 @@ import shared.src.IServer;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import shared.src.Article;
+import shared.src.Facture;
 
 public class ServerImpl extends UnicastRemoteObject implements IServer {
     private Connection conn;
@@ -28,7 +32,8 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
             stmt.setInt(1, reference);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return new Article(rs.getInt("reference"), rs.getString("famille"), rs.getBigDecimal("prix"), rs.getInt("quantite_stock"));
+                    System.out.println(rs.getInt("reference")+ rs.getString("famille")+ rs.getBigDecimal("prix")+ rs.getInt("stock"));
+                    return new Article(rs.getInt("reference"), rs.getString("famille"), rs.getBigDecimal("prix"), rs.getInt("stock"));
                 }
             }
         } catch (SQLException e) {
@@ -39,13 +44,13 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
 
     @Override
     public List<Article> rechercherArticlesParFamille(String famille) throws RemoteException {
-        String query = "SELECT * FROM articles WHERE famille = ? AND quantite_stock > 0";
+        String query = "SELECT * FROM articles WHERE famille = ? AND stock > 0";
         List<Article> references = new ArrayList<>();
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, famille);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    references.add(new Article(rs.getInt("reference"), rs.getString("famille"), rs.getBigDecimal("prix"), rs.getInt("quantite_stock")));
+                    references.add(new Article(rs.getInt("reference"), rs.getString("famille"), rs.getBigDecimal("prix"), rs.getInt("stock")));
                 }
             }
         } catch (SQLException e) {
@@ -55,59 +60,75 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
     }
 
     @Override
-    public boolean acheterArticles(String client, List<Article> articles, String modePaiement) throws RemoteException {
-        String insertCommandeQuery = "INSERT INTO commandes (client, mode_paiement, date_creation) VALUES (?, ?, NOW())";
-        String insertQuantiteCommandeQuery = "INSERT INTO quantite_commandes (commande_reference, article_reference, quantite_commande) VALUES (?, ?, ?)";
-        String updateStockQuery = "UPDATE articles SET quantite_stock = quantite_stock - ? WHERE reference = ? AND quantite_stock >= ?";
-
-        try {
+    public boolean acheterArticle(String client, int reference, int quantite, String modePaiement) throws RemoteException {
+        String checkStockQuery = "SELECT stock FROM articles WHERE reference = ?";
+        String updateStockQuery = "UPDATE articles SET stock = stock - ? WHERE reference = ?";
+        String insertFactureQuery = "INSERT INTO factures (client, mode_paiement, montant, date_creation, date_modification) VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+        String insertQuantiteFactureQuery = "INSERT INTO quantite_factures (facture_reference, article_reference, quantite_facture) VALUES (?, ?, ?)";
+        BigDecimal prix = new BigDecimal("0");
+        BigDecimal bDQuantite = new BigDecimal("0");
+        
+        try (PreparedStatement checkStockStmt = conn.prepareStatement(checkStockQuery);
+             PreparedStatement updateStockStmt = conn.prepareStatement(updateStockQuery);
+             PreparedStatement insertFactureStmt = conn.prepareStatement(insertFactureQuery, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement insertQuantiteFactureStmt = conn.prepareStatement(insertQuantiteFactureQuery)) {
+            
             conn.setAutoCommit(false);
 
-            // Insérer la commande
-            int commandeId;
-            try (PreparedStatement stmt = conn.prepareStatement(insertCommandeQuery, Statement.RETURN_GENERATED_KEYS)) {
-                stmt.setString(1, client);
-                stmt.setString(2, modePaiement);
-                stmt.executeUpdate();
-                try (ResultSet rs = stmt.getGeneratedKeys()) {
+            checkStockStmt.setInt(1, reference);
+            try (ResultSet rs = checkStockStmt.executeQuery()) {
                     if (rs.next()) {
-                        commandeId = rs.getInt(1);
-                    } else {
+                    int stock = rs.getInt("stock");
+                    if (stock < quantite) {
                         conn.rollback();
                         return false;
                     }
+                } else {
+                    conn.rollback();
+                    return false;
                 }
             }
 
-            // Insérer chaque article de la commande et mettre à jour le stock
-            try (PreparedStatement stmtQuantite = conn.prepareStatement(insertQuantiteCommandeQuery);
-                 PreparedStatement stmtStock = conn.prepareStatement(updateStockQuery)) {
-                for (Article article : articles) {
-                    // Insérer la quantité commandée
-                    stmtQuantite.setInt(1, commandeId);
-                    stmtQuantite.setInt(2, article.getReference());
-                    stmtQuantite.setInt(3, article.getQuantite());
-                    stmtQuantite.addBatch();
+            // Update stock
+            updateStockStmt.setInt(1, quantite);
+            updateStockStmt.setInt(2, reference);
+            int rowsAffected = updateStockStmt.executeUpdate();
+            if (rowsAffected == 0) {
+                conn.rollback();
+                return false;
+            }
 
-                    // Mettre à jour le stock
-                    stmtStock.setInt(1, article.getQuantite());
-                    stmtStock.setInt(2, article.getReference());
-                    stmtStock.setInt(3, article.getQuantite());
-                    stmtStock.addBatch();
+            // Insert facture
+            insertFactureStmt.setString(1, client);
+            insertFactureStmt.setString(2, modePaiement);
+            insertFactureStmt.setBigDecimal(3, bDQuantite.multiply(prix));
+            insertFactureStmt.executeUpdate();
+
+            try (ResultSet generatedKeys = insertFactureStmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int factureId = generatedKeys.getInt(1);
+                    
+                    // Insert quantite_factures
+                    insertQuantiteFactureStmt.setInt(1, factureId);
+                    insertQuantiteFactureStmt.setInt(2, reference);
+                    insertQuantiteFactureStmt.setInt(3, quantite);
+                    insertQuantiteFactureStmt.executeUpdate();
+                } else {
+                    conn.rollback();
+                    return false;
                 }
-                stmtQuantite.executeBatch();
-                stmtStock.executeBatch();
             }
 
             conn.commit();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
             try {
                 conn.rollback();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+            } catch (SQLException rollbackException) {
+                rollbackException.printStackTrace();
             }
+            e.printStackTrace();
+            return false;
         } finally {
             try {
                 conn.setAutoCommit(true);
@@ -115,17 +136,16 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
                 e.printStackTrace();
             }
         }
-        return false;
     }
 
     @Override
-    public Commande consulterCommande(int reference) throws RemoteException {
-        String query = "SELECT * FROM commandes WHERE reference = ?";
+    public Facture consulterFacture(int reference) throws RemoteException {
+        String query = "SELECT * FROM factures WHERE reference = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, reference);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return new Commande(rs.getInt("reference"), rs.getString("client"), rs.getString("mode_paiement"), rs.getTimestamp("date_creation"), rs.getTimestamp("date_enregistrement"), rs.getTimestamp("date_modification"));
+                    return new Facture(rs.getInt("reference"), rs.getString("client"), rs.getString("mode_paiement"), rs.getBigDecimal("montant"), rs.getTimestamp("date_creation"), rs.getTimestamp("date_enregistrement"));
                 }
             }
         } catch (SQLException e) {
@@ -136,11 +156,9 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
 
     @Override
     public double calculerChiffreAffaires(String date) throws RemoteException {
-        String query = "SELECT SUM(a.prix * qc.quantite_commande) AS chiffre_affaires " +
-                       "FROM commande c " +
-                       "JOIN quantite_commandes qc ON c.reference = qc.commande_reference " +
-                       "JOIN articles a ON qc.article_reference = a.reference " +
-                       "WHERE DATE(c.date_creation) = ?";
+        String query = "SELECT SUM(f.montant) AS chiffre_affaires " +
+                       "FROM factures f " +
+                       "WHERE DATE(f.date_creation) = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, date);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -156,7 +174,7 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
 
     @Override
     public boolean ajouterProduitStock(int reference, int quantite) throws RemoteException {
-        String query = "UPDATE articles SET quantite_stock = quantite_stock + ? WHERE reference = ?";
+        String query = "UPDATE articles SET stock = stock + ? WHERE reference = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, quantite);
             stmt.setInt(2, reference);

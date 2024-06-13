@@ -1,4 +1,4 @@
-package server.src;
+package shared.src;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

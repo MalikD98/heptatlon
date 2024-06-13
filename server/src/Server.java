@@ -12,6 +12,8 @@ public class Server {
             ServerImpl server = new ServerImpl();
             Naming.rebind("rmi://localhost/Server", server);
             System.out.println("Serveur prêt.");
+            // server.consulterStock(1);
+             
         } catch (Exception e) {
             e.printStackTrace();
         }

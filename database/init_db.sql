@@ -1,28 +1,48 @@
 CREATE DATABASE IF NOT EXISTS heptathlon;
 USE heptathlon;
 
+-- Création de la table Magasins
+CREATE TABLE IF NOT EXISTS magasins (
+    reference INT PRIMARY KEY, -- Référence unique du magasin
+    nom VARCHAR(255),          -- Nom du magasin
+    ville VARCHAR(255),        -- Ville du magasin
+    code_postal VARCHAR(10)    -- Code postal du magasin
+);
+
+-- Création de la table Articles
 CREATE TABLE IF NOT EXISTS articles (
-    reference INT PRIMARY KEY,
-    famille VARCHAR(50),
-    prix DECIMAL(10, 2),
-    quantite_stock INT
+    reference INT PRIMARY KEY, -- Référence unique de l'article
+    libelle VARCHAR(255),      -- Nom de l'article
+    famille VARCHAR(50),       -- Famille de l'article
+    prix DECIMAL(10, 2)        -- Prix de l'article
 );
 
+-- Création de la table Stock
+CREATE TABLE IF NOT EXISTS stock (
+    magasin_reference INT,     -- Référence du magasin (clé étrangère)
+    article_reference INT,     -- Référence de l'article (clé étrangère)
+    qte_stocke INT,            -- Quantité stockée de l'article dans le magasin
+    PRIMARY KEY (magasin_reference, article_reference), -- Clé primaire composite
+    FOREIGN KEY (magasin_reference) REFERENCES magasins(reference), -- Clé étrangère vers magasins
+    FOREIGN KEY (article_reference) REFERENCES articles(reference)  -- Clé étrangère vers articles
+);
+
+-- Création de la table Commandes
 CREATE TABLE IF NOT EXISTS commandes (
-    reference INT PRIMARY KEY,
-    client VARCHAR(255),
-    mode_paiement VARCHAR(50),
-    date_creation DATETIME default CURRENT_TIMESTAMP,
-    date_enregistrement DATETIME default NULL,
-    date_modification DATETIME
+    magasin_reference INT,     -- Référence du magasin (clé étrangère)
+    article_reference INT,     -- Référence de l'article (clé étrangère)
+    qte_fournie INT,           -- Quantité fournie de l'article dans la commande
+    PRIMARY KEY (magasin_reference, article_reference), -- Clé primaire composite
+    FOREIGN KEY (magasin_reference) REFERENCES magasins(reference), -- Clé étrangère vers magasins
+    FOREIGN KEY (article_reference) REFERENCES articles(reference)  -- Clé étrangère vers articles
 );
 
-CREATE TABLE IF NOT EXISTS quantite_commandes (
-    commande_reference INT,
-    article_reference INT,
-    quantite_commande INT,
-    PRIMARY KEY (commande_reference, article_reference),
-    FOREIGN KEY (commande_reference) REFERENCES commandes(reference),
-    FOREIGN KEY (article_reference) REFERENCES articles(reference)
+-- Création de la table Factures
+CREATE TABLE IF NOT EXISTS factures (
+    reference INT PRIMARY KEY,   -- Référence unique de la facture
+    client VARCHAR(255),         -- Nom du client
+    mode_paiement VARCHAR(50),   -- Mode de paiement utilisé
+    montant DECIMAL(10, 2),      -- Montant total de la facture
+    date_creation DATETIME DEFAULT CURRENT_TIMESTAMP, -- Date de création de la facture
+    date_enregistrement DATETIME DEFAULT NULL         -- Date d'enregistrement de la facture
 );
-

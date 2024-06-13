@@ -13,16 +13,21 @@ public class Seeder {
     public static void main(String[] args) {
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
             seedArticles(conn);
-            seedCommandes(conn);
-            seedQuantiteCommandes(conn);
+            seedFactures(conn);
+            seedQuantiteFactures(conn);
             System.out.println("Seeding terminé avec succès !");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Insère des données dans la table articles.
+     * @param conn la connexion à la base de données
+     * @throws SQLException si une erreur survient pendant l'insertion
+     */
     private static void seedArticles(Connection conn) throws SQLException {
-        String sql = "INSERT INTO articles (reference, famille, prix, quantite_stock) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO articles (reference, famille, prix, stock) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, 1);
             stmt.setString(2, "Sports");
@@ -58,27 +63,41 @@ public class Seeder {
         }
     }
 
-    private static void seedCommandes(Connection conn) throws SQLException {
-        String sql = "INSERT INTO commandes (reference, client, mode_paiement, date_creation) VALUES (?, ?, ?, ?)";
+    /**
+     * Insère des données dans la table factures.
+     * @param conn la connexion à la base de données
+     * @throws SQLException si une erreur survient pendant l'insertion
+     */
+    private static void seedFactures(Connection conn) throws SQLException {
+        String sql = "INSERT INTO factures (reference, client, mode_paiement, montant, date_creation, date_modification) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, 1);
-            stmt.setString(2, "John Doe");
+            stmt.setString(2, "johndoe@mail.com");
             stmt.setString(3, "Credit Card");
-            stmt.setTimestamp(4, java.sql.Timestamp.valueOf("2024-05-10 10:00:00"));
+            stmt.setBigDecimal(4, new java.math.BigDecimal("51.97"));
+            stmt.setTimestamp(5, java.sql.Timestamp.valueOf("2024-05-10 10:00:00"));
+            stmt.setTimestamp(6, java.sql.Timestamp.valueOf("2024-05-10 10:00:00"));
             stmt.addBatch();
 
             stmt.setInt(1, 2);
-            stmt.setString(2, "Jane Smith");
+            stmt.setString(2, "ebda3a99-c8ed-49c0-98ac-2c08e9f0f1b2");
             stmt.setString(3, "Cash");
-            stmt.setTimestamp(4, java.sql.Timestamp.valueOf("2024-05-11 11:00:00"));
+            stmt.setBigDecimal(4, new java.math.BigDecimal("31"));
+            stmt.setTimestamp(5, java.sql.Timestamp.valueOf("2024-05-11 11:00:00"));
+            stmt.setTimestamp(6, java.sql.Timestamp.valueOf("2024-05-11 11:00:00"));
             stmt.addBatch();
 
             stmt.executeBatch();
         }
     }
 
-    private static void seedQuantiteCommandes(Connection conn) throws SQLException {
-        String sql = "INSERT INTO quantite_commandes (commande_reference, article_reference, quantite_commande) VALUES (?, ?, ?)";
+    /**
+     * Insère des données dans la table quantite_factures.
+     * @param conn la connexion à la base de données
+     * @throws SQLException si une erreur survient pendant l'insertion
+     */
+    private static void seedQuantiteFactures(Connection conn) throws SQLException {
+        String sql = "INSERT INTO quantite_factures (facture_reference, article_reference, quantite_facture) VALUES (?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, 1);
             stmt.setInt(2, 1);
