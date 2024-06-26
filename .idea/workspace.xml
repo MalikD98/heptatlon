@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="355b5ef4-f9df-4fd6-b85f-36ca5038cf88" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/documentation/structure.txt" beforeDir="false" afterPath="$PROJECT_DIR$/documentation/structure.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/database/Seeder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/server/src/Server.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/server/src/ServerImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/shared/src/Article.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/shared/src/Facture.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/shared/src/IServer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/shared/src/QuantiteFacture.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,11 +16,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 8
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2iNAkSDIQyP1zGs27sKkKqNMkpe" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -38,7 +32,9 @@
     "git-widget-placeholder": "ft__client__side",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/malik/Desktop/MIAGE-M1/Ingénierie logicielle/Activite2/visualvm_217/bin/visualvm.exe",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.ignored.files",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -61,5 +57,8 @@
       <workItem from="1719320818258" duration="13000" />
     </task>
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
 </project>
