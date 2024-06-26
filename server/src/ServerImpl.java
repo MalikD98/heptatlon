@@ -27,7 +27,7 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
 
     @Override
     public Article consulterStock(int reference) throws RemoteException {
-        String query = "SELECT * FROM articles WHERE reference = ?";
+        String query = "SELECT * FROM `stock` WHERE article_reference = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, reference);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -43,11 +43,12 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
     }
 
     @Override
-    public List<Article> rechercherArticlesParFamille(String famille) throws RemoteException {
-        String query = "SELECT * FROM `stock` stock join articles art on stock.article_reference = art.reference WHERE art.famille = 'Sports' and stock.qte_stocke > 0;";
+    public List<Article> rechercherArticlesParFamille(String famille, int refmagasin) throws RemoteException {
+        String query = "SELECT art.*, stock.qte_stock FROM `stock` stock join articles art on stock.article_reference = art.reference WHERE art.famille = 'Sports' and stock.qte_stock > 0 and stock.magasin_reference = 1";
         List<Article> references = new ArrayList<>();
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, famille);
+            stmt.setInt(2, refmagasin);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     references.add(new Article(rs.getInt("reference"), rs.getString("famille"), rs.getBigDecimal("prix"), rs.getInt("stock")));
@@ -61,10 +62,10 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
 
     @Override
     public boolean acheterArticle(String client, int reference, int quantite, String modePaiement) throws RemoteException {
-        String checkStockQuery = "SELECT st.qte_stocke FROM articles art join stock st on art.reference=st.article_reference WHERE art.reference = ?";
-        String updateStockQuery = "UPDATE articles SET stock = stock - ? WHERE reference = ?";
-        String insertFactureQuery = "INSERT INTO factures (client, mode_paiement, montant, date_creation, date_modification) VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
-        String insertQuantiteFactureQuery = "INSERT INTO quantite_factures (facture_reference, article_reference, quantite_facture) VALUES (?, ?, ?)";
+        String checkStockQuery = "SELECT * FROM `stock` WHERE article_reference = ?";
+        String updateStockQuery = "UPDATE stock SET qte_stock = qte_stock - ? WHERE article_reference = ?";
+        String insertFactureQuery = "INSERT INTO factures (client, mode_paiement, montant) VALUES (?, ?, ?)";
+        String insertQuantiteFactureQuery = "INSERT INTO commandes (magasin_reference, article_reference, qte_fournie) VALUES (?, ?, ?)";
         BigDecimal prix = new BigDecimal("0");
         BigDecimal bDQuantite = new BigDecimal("0");
         
@@ -156,9 +157,7 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
 
     @Override
     public double calculerChiffreAffaires(String date) throws RemoteException {
-        String query = "SELECT SUM(f.montant) AS chiffre_affaires " +
-                       "FROM factures f " +
-                       "WHERE DATE(f.date_creation) = ?";
+        String query = "SELECT SUM(f.montant) AS chiffre_affaires FROM factures f WHERE DATE(f.date_creation) = date(?)";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, date);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -174,7 +173,7 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
 
     @Override
     public boolean ajouterProduitStock(int reference, int quantite) throws RemoteException {
-        String query = "UPDATE articles SET stock = stock + ? WHERE reference = ?";
+        String query = "UPDATE stock SET qte_stock = qte_stock + ? WHERE article_reference = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, quantite);
             stmt.setInt(2, reference);
