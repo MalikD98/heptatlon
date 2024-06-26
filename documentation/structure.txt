@@ -1,21 +1,22 @@
 heptatlon/
-├── client/
-│   └── Main.java
 ├── database/
 │   ├── init_db.sql
 │   └── Seeder.java
 ├── documentation/
 │   ├── mcd.png
 │   └── structure.txt
-├── server/
-│   └── src/
-│       ├── Article.java
-│       ├── Commande.java
-│       ├── Facture.java
-│       ├── QuantiteFacture.java
-│       ├── Server.java
-│       └── ServerImpl.java
-├── shared/
-│   └── src/
-│       └── IServer.java
+├── src/
+│   ├── server/
+│   │   ├── Server.java
+│   │   └── ServerImpl.java
+│   ├── shared/
+│   │   ├── Article.java
+│   │   ├── Commande.java
+│   │   ├── Facture.java
+│   │   ├── IServer.java
+│   │   └── QuantiteFacture.java
+│   ├── client/
+│   │   └── service/
+│   │       └── ClientService.java
+│   └── Main.java
 └─── pom.xml

@@ -11,7 +11,7 @@
     </properties>
     <build>
         <outputDirectory>${project.basedir}/out</outputDirectory>
-        <sourceDirectory>${project.basedir}/client</sourceDirectory> <!-- Chemin des sources -->
+        <sourceDirectory>${project.basedir}/src</sourceDirectory> <!-- Chemin des sources -->
         <plugins>
             <!-- Compiler Plugin -->
             <plugin>
@@ -29,12 +29,26 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.6.0</version>
-                <configuration>
-                    <mainClass>Main</mainClass> <!-- Classe principale sans le préfixe de package -->
-                    <classpathScope>compile</classpathScope>
-                    <includePluginDependencies>true</includePluginDependencies>
-                    <includeProjectDependencies>true</includeProjectDependencies>
-                </configuration>
+                <executions>
+                    <execution>
+                        <id>run-main</id>
+                        <configuration>
+                            <mainClass>Main</mainClass> <!-- Classe principale pour le client -->
+                            <classpathScope>compile</classpathScope>
+                            <includePluginDependencies>true</includePluginDependencies>
+                            <includeProjectDependencies>true</includeProjectDependencies>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>run-server</id>
+                        <configuration>
+                            <mainClass>server.Server</mainClass> <!-- Classe principale pour le serveur -->
+                            <classpathScope>compile</classpathScope>
+                            <includePluginDependencies>true</includePluginDependencies>
+                            <includeProjectDependencies>true</includeProjectDependencies>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <!-- Plugin JavaFX -->
             <plugin>
@@ -43,7 +57,6 @@
                 <version>0.0.5</version>
                 <configuration>
                     <mainClass>Main</mainClass> <!-- Classe principale sans le préfixe de package -->
-                    <source>${project.basedir}/client</source> <!-- Chemin des sources JavaFX -->
                 </configuration>
             </plugin>
         </plugins>

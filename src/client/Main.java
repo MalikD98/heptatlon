@@ -1,5 +1,3 @@
-package client;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
@@ -9,7 +7,8 @@ import javafx.stage.Stage;
 import java.rmi.RemoteException;
 import java.util.List;
 
-import shared.src.Article;
+import shared.Article;
+import client.service.ClientService;
 
 /**
  * Point d'entrée de l'application JavaFX.
@@ -23,15 +22,16 @@ public class Main extends Application {
 
         VBox root = new VBox();
         ListView<String> listView = new ListView<>();
+        listView.getItems().add("€ - money");
 
-        try {
+        /*try {
             List<Article> articles = clientService.rechercherArticlesParFamille("Sport");
             for (Article article : articles) {
                 listView.getItems().add(article.getLibelle() + " - " + article.getPrix() + "€");
             }
         } catch (RemoteException e) {
             e.printStackTrace();
-        }
+        }*/
 
         root.getChildren().add(listView);
         primaryStage.setScene(new Scene(root, 400, 300));

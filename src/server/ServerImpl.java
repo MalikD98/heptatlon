@@ -1,6 +1,6 @@
-package server.src;
+package server;
 
-import shared.src.IServer;
+import shared.IServer;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import shared.src.Article;
-import shared.src.Facture;
+import shared.Article;
+import shared.Facture;
 
 public class ServerImpl extends UnicastRemoteObject implements IServer {
     private Connection conn;
