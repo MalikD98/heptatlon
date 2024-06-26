@@ -44,7 +44,7 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
 
     @Override
     public List<Article> rechercherArticlesParFamille(String famille) throws RemoteException {
-        String query = "SELECT * FROM articles WHERE famille = ? AND stock > 0";
+        String query = "SELECT * FROM `stock` stock join articles art on stock.article_reference = art.reference WHERE art.famille = 'Sports' and stock.qte_stocke > 0;";
         List<Article> references = new ArrayList<>();
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, famille);
@@ -61,7 +61,7 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
 
     @Override
     public boolean acheterArticle(String client, int reference, int quantite, String modePaiement) throws RemoteException {
-        String checkStockQuery = "SELECT stock FROM articles WHERE reference = ?";
+        String checkStockQuery = "SELECT st.qte_stocke FROM articles art join stock st on art.reference=st.article_reference WHERE art.reference = ?";
         String updateStockQuery = "UPDATE articles SET stock = stock - ? WHERE reference = ?";
         String insertFactureQuery = "INSERT INTO factures (client, mode_paiement, montant, date_creation, date_modification) VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
         String insertQuantiteFactureQuery = "INSERT INTO quantite_factures (facture_reference, article_reference, quantite_facture) VALUES (?, ?, ?)";
