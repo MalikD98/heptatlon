@@ -3,7 +3,7 @@ USE heptathlon;
 
 -- Création de la table Magasins
 CREATE TABLE IF NOT EXISTS magasins (
-    reference INT PRIMARY KEY, -- Référence unique du magasin
+    reference INT AUTO_INCREMENT PRIMARY KEY, -- Référence unique du magasin
     nom VARCHAR(255),          -- Nom du magasin
     ville VARCHAR(255),        -- Ville du magasin
     code_postal VARCHAR(10)    -- Code postal du magasin
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS magasins (
 
 -- Création de la table Articles
 CREATE TABLE IF NOT EXISTS articles (
-    reference INT PRIMARY KEY, -- Référence unique de l'article
+    reference INT AUTO_INCREMENT PRIMARY KEY, -- Référence unique de l'article
     libelle VARCHAR(255),      -- Nom de l'article
     famille VARCHAR(50),       -- Famille de l'article
     prix DECIMAL(10, 2)        -- Prix de l'article
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS articles (
 CREATE TABLE IF NOT EXISTS stock (
     magasin_reference INT,     -- Référence du magasin (clé étrangère)
     article_reference INT,     -- Référence de l'article (clé étrangère)
-    qte_stocke INT,            -- Quantité stockée de l'article dans le magasin
+    qte_stock INT,            -- Quantité stockée de l'article dans le magasin
     PRIMARY KEY (magasin_reference, article_reference), -- Clé primaire composite
     FOREIGN KEY (magasin_reference) REFERENCES magasins(reference), -- Clé étrangère vers magasins
     FOREIGN KEY (article_reference) REFERENCES articles(reference)  -- Clé étrangère vers articles
@@ -29,17 +29,17 @@ CREATE TABLE IF NOT EXISTS stock (
 
 -- Création de la table Commandes
 CREATE TABLE IF NOT EXISTS commandes (
-    magasin_reference INT,     -- Référence du magasin (clé étrangère)
-    article_reference INT,     -- Référence de l'article (clé étrangère)
-    qte_fournie INT,           -- Quantité fournie de l'article dans la commande
-    PRIMARY KEY (magasin_reference, article_reference), -- Clé primaire composite
+     magasin_reference INT,     -- Référence du magasin (clé étrangère)
+     article_reference INT,     -- Référence de l'article (clé étrangère)
+     qte_fournie INT,           -- Quantité fournie de l'article dans la commande
+     PRIMARY KEY (magasin_reference, article_reference), -- Clé primaire composite
     FOREIGN KEY (magasin_reference) REFERENCES magasins(reference), -- Clé étrangère vers magasins
     FOREIGN KEY (article_reference) REFERENCES articles(reference)  -- Clé étrangère vers articles
 );
 
 -- Création de la table Factures
 CREATE TABLE IF NOT EXISTS factures (
-    reference INT PRIMARY KEY,   -- Référence unique de la facture
+    reference INT AUTO_INCREMENT PRIMARY KEY,   -- Référence unique de la facture
     client VARCHAR(255),         -- Nom du client
     mode_paiement VARCHAR(50),   -- Mode de paiement utilisé
     montant DECIMAL(10, 2),      -- Montant total de la facture
