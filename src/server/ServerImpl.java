@@ -1,6 +1,6 @@
-package server.src;
+package server;
 
-import shared.src.IServer;
+import shared.IServer;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import shared.src.Article;
-import shared.src.Facture;
+import shared.Article;
+import shared.Facture;
 
 public class ServerImpl extends UnicastRemoteObject implements IServer {
     private Connection conn;
@@ -32,8 +32,8 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
             stmt.setInt(1, reference);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    System.out.println(rs.getInt("reference")+ rs.getString("famille")+ rs.getBigDecimal("prix")+ rs.getInt("stock"));
-                    return new Article(rs.getInt("reference"), rs.getString("famille"), rs.getBigDecimal("prix"), rs.getInt("stock"));
+                    System.out.println(rs.getInt("reference")+ rs.getString("famille")+ rs.getString("libelle") + rs.getBigDecimal("prix")+ rs.getInt("stock"));
+                    return new Article(rs.getInt("reference"), rs.getString("famille"), rs.getString("libelle"), rs.getBigDecimal("prix"), rs.getInt("stock"));
                 }
             }
         } catch (SQLException e) {
@@ -51,7 +51,7 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
             stmt.setInt(2, refmagasin);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    references.add(new Article(rs.getInt("reference"), rs.getString("famille"), rs.getBigDecimal("prix"), rs.getInt("stock")));
+                    references.add(new Article(rs.getInt("reference"), rs.getString("famille"), rs.getString("libelle"), rs.getBigDecimal("prix"), rs.getInt("stock")));
                 }
             }
         } catch (SQLException e) {
