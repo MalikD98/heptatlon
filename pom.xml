@@ -13,7 +13,7 @@
     </properties>
     <build>
         <outputDirectory>${project.basedir}/out</outputDirectory>
-        <sourceDirectory>src</sourceDirectory>
+        <sourceDirectory>${project.basedir}/src</sourceDirectory> <!-- Chemin des sources -->
         <plugins>
             <!-- Compiler Plugin -->
             <plugin>
@@ -31,12 +31,26 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.6.0</version>
-                <configuration>
-                    <mainClass>Main</mainClass> <!-- Classe principale sans le préfixe de package -->
-                    <classpathScope>compile</classpathScope>
-                    <includePluginDependencies>true</includePluginDependencies>
-                    <includeProjectDependencies>true</includeProjectDependencies>
-                </configuration>
+                <executions>
+                    <execution>
+                        <id>run-main</id>
+                        <configuration>
+                            <mainClass>Main</mainClass> <!-- Classe principale pour le client -->
+                            <classpathScope>compile</classpathScope>
+                            <includePluginDependencies>true</includePluginDependencies>
+                            <includeProjectDependencies>true</includeProjectDependencies>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>run-server</id>
+                        <configuration>
+                            <mainClass>server.Server</mainClass> <!-- Classe principale pour le serveur -->
+                            <classpathScope>compile</classpathScope>
+                            <includePluginDependencies>true</includePluginDependencies>
+                            <includeProjectDependencies>true</includeProjectDependencies>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <!-- Plugin JavaFX -->
             <plugin>
@@ -52,12 +66,6 @@
                 </executions>
                 <configuration>
                     <mainClass>Main</mainClass> <!-- Classe principale sans le préfixe de package -->
-                    <options>
-                        <option>--module-path</option>
-                        <option>${java.home}/lib</option>
-                        <option>--add-modules</option>
-                        <option>javafx.controls,javafx.fxml</option>
-                    </options>
                 </configuration>
             </plugin>
         </plugins>

@@ -23,7 +23,7 @@ public class ClientService {
         }
     }
 
-    public List<Article> rechercherArticlesParFamille(String family, int refmagasin) throws RemoteException {
-        return server.rechercherArticlesParFamille(family, 1);
+    public List<Article> rechercherArticlesParFamille(String famille) throws RemoteException {
+        return server.rechercherArticlesParFamille(famille, 1);
     }
 }
