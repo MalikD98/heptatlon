@@ -13,8 +13,7 @@ heptatlon/
 │   │   ├── Article.java
 │   │   ├── Commande.java
 │   │   ├── Facture.java
-│   │   ├── IServer.java
-│   │   └── QuantiteFacture.java
+│   │   └── IServer.java
 │   ├── client/
 │   │   └── service/
 │   │       └── ClientService.java

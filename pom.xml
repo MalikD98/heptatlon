@@ -11,7 +11,7 @@
     </properties>
     <build>
         <outputDirectory>${project.basedir}/out</outputDirectory>
-        <sourceDirectory>${project.basedir}/src</sourceDirectory> <!-- Chemin des sources -->
+        <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory> <!-- Chemin des sources -->
         <plugins>
             <!-- Compiler Plugin -->
             <plugin>
@@ -33,7 +33,7 @@
                     <execution>
                         <id>run-main</id>
                         <configuration>
-                            <mainClass>Main</mainClass> <!-- Classe principale pour le client -->
+                            <mainClass>client.Main</mainClass> <!-- Classe principale pour le client -->
                             <classpathScope>compile</classpathScope>
                             <includePluginDependencies>true</includePluginDependencies>
                             <includeProjectDependencies>true</includeProjectDependencies>

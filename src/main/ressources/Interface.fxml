@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+
+<GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="client.controller.ClientController">
+    <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+
+    <!-- Section pour consulter le stock -->
+    <Label text="Consulter le stock" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+    <TextField fx:id="referenceField" promptText="Référence de l'article" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+    <Button text="Consulter" onAction="#handleConsulterStock" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+    <TableView fx:id="stockTable" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2">
+        <columns>
+            <TableColumn text="Référence" fx:id="refColumn"/>
+            <TableColumn text="Famille" fx:id="familleColumn"/>
+            <TableColumn text="Prix" fx:id="prixColumn"/>
+            <TableColumn text="Quantité" fx:id="quantiteColumn"/>
+        </columns>
+    </TableView>
+
+    <!-- Section pour passer une commande -->
+    <Label text="Passer une commande" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+    <HBox spacing="10" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="2">
+        <TextField fx:id="clientIdField" promptText="ID Client"/>
+        <TextField fx:id="articleRefField" promptText="Référence Article"/>
+        <TextField fx:id="quantiteField" promptText="Quantité"/>
+        <Button text="Commander" onAction="#handlePasserCommande"/>
+    </HBox>
+
+    <!-- Section pour récupérer les factures -->
+    <Label text="Récupérer les factures" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+    <TextField fx:id="factureClientIdField" promptText="ID Client" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+    <Button text="Récupérer" onAction="#handleGetFactures" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+
+    <TableView fx:id="facturesTable" GridPane.rowIndex="7" GridPane.columnIndex="0" GridPane.columnSpan="2">
+        <columns>
+            <TableColumn text="ID Facture" fx:id="idFactureColumn"/>
+            <TableColumn text="Montant" fx:id="montantColumn"/>
+            <TableColumn text="Date" fx:id="dateColumn"/>
+        </columns>
+    </TableView>
+</GridPane>
