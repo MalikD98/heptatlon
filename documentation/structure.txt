@@ -6,16 +6,22 @@ heptatlon/
 │   ├── mcd.png
 │   └── structure.txt
 ├── src/
-│   ├── server/
-│   │   ├── Server.java
-│   │   └── ServerImpl.java
-│   ├── shared/
-│   │   ├── Article.java
-│   │   ├── Commande.java
-│   │   ├── Facture.java
-│   │   └── IServer.java
-│   ├── client/
-│   │   └── service/
-│   │       └── ClientService.java
-│   └── Main.java
+│   └── main/
+│       ├── java/
+│       │   ├── server/
+│       │   │   ├── Server.java
+│       │   │   └── ServerImpl.java
+│       │   ├── shared/
+│       │   │   ├── Article.java
+│       │   │   ├── Commande.java
+│       │   │   ├── Facture.java
+│       │   │   └── IServer.java
+│       │   ├── client/
+│       │   │   ├── service/
+│       │   │   │   └── ClientService.java
+│       │   │   └── controller/
+│       │   │       └── ClientController.java
+│       │   └── Main.java
+│       └── ressources/
+│           └── Interface.fxml
 └─── pom.xml
