@@ -100,7 +100,7 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return factures;
     }
 
     @Override

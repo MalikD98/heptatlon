@@ -50,6 +50,15 @@
                             <includeProjectDependencies>true</includeProjectDependencies>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>run-seeder</id>
+                        <configuration>
+                            <mainClass>database.Seeder</mainClass> <!-- Classe principale pour le seeder -->
+                            <classpathScope>compile</classpathScope>
+                            <includePluginDependencies>true</includePluginDependencies>
+                            <includeProjectDependencies>true</includeProjectDependencies>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <!-- Plugin JavaFX -->

@@ -27,18 +27,6 @@ CREATE TABLE IF NOT EXISTS stock (
     FOREIGN KEY (article_reference) REFERENCES articles(reference)  -- Clé étrangère vers articles
 );
 
--- Création de la table Commandes
-CREATE TABLE IF NOT EXISTS commandes (
-     magasin_reference INT,     -- Référence du magasin (clé étrangère)
-     article_reference INT,     -- Référence de l'article (clé étrangère)
-     facture_reference INT,     -- Référence de la facture (clé étrangère)
-     qte_fournie INT,           -- Quantité fournie de l'article dans la commande
-     PRIMARY KEY (magasin_reference, article_reference), -- Clé primaire composite
-    FOREIGN KEY (magasin_reference) REFERENCES magasins(reference), -- Clé étrangère vers magasins
-    FOREIGN KEY (article_reference) REFERENCES articles(reference)  -- Clé étrangère vers articles
-    FOREIGN KEY (facture_reference) REFERENCES factures(reference)  -- Clé étrangère vers factures
-);
-
 -- Création de la table Factures
 CREATE TABLE IF NOT EXISTS factures (
     reference INT AUTO_INCREMENT PRIMARY KEY,   -- Référence unique de la facture
@@ -47,4 +35,16 @@ CREATE TABLE IF NOT EXISTS factures (
     montant DECIMAL(10, 2),      -- Montant total de la facture
     date_creation DATETIME DEFAULT CURRENT_TIMESTAMP, -- Date de création de la facture
     date_enregistrement DATETIME DEFAULT NULL         -- Date d'enregistrement de la facture
+);
+
+-- Création de la table Commandes
+CREATE TABLE IF NOT EXISTS commandes (
+     magasin_reference INT,     -- Référence du magasin (clé étrangère)
+     article_reference INT,     -- Référence de l'article (clé étrangère)
+     facture_reference INT,     -- Référence de la facture (clé étrangère)
+     qte_fournie INT,           -- Quantité fournie de l'article dans la commande
+     PRIMARY KEY (magasin_reference, article_reference), -- Clé primaire composite
+    FOREIGN KEY (magasin_reference) REFERENCES magasins(reference), -- Clé étrangère vers magasins
+    FOREIGN KEY (article_reference) REFERENCES articles(reference), -- Clé étrangère vers articles
+    FOREIGN KEY (facture_reference) REFERENCES factures(reference)  -- Clé étrangère vers factures
 );
