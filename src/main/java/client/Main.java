@@ -11,7 +11,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Chargement de l'interface FXML
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Commandes.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Interface.fxml"));
 
         // // Création de la scène et définition de ses propriétés
         primaryStage.setTitle("Gestion de Stock et Facturation");

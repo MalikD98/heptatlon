@@ -5,6 +5,7 @@ import shared.Commande;
 import shared.Facture;
 import shared.IServer;
 
+import java.math.BigDecimal;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.List;
@@ -113,6 +114,16 @@ public class ClientService {
             return null;
         }
     }
+
+    public BigDecimal calculerChiffreAffaires(String date) {
+        try {
+            return server.calculerChiffreAffaires(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BigDecimal.ZERO;
+        }
+    }
+
 
     // Méthodes supplémentaires selon les besoins
 }
