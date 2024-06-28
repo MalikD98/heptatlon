@@ -1,10 +1,13 @@
 package client.controller;
 
+import java.util.List;
+
 import client.service.ClientService;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import shared.Article;
 import shared.Facture;
 import shared.Commande;
@@ -12,7 +15,7 @@ import shared.Commande;
 public class ClientController {
 
     @FXML
-    private TextField referenceField;
+    private TextField familleField;
     @FXML
     private TextField clientIdField;
     @FXML
@@ -49,15 +52,35 @@ public class ClientController {
     @FXML
     private void initialize() {
         // Initialize table columns if necessary
+        refColumn.setCellValueFactory(new PropertyValueFactory<>("reference"));
+        familleColumn.setCellValueFactory(new PropertyValueFactory<>("famille"));
+        prixColumn.setCellValueFactory(new PropertyValueFactory<>("prix"));
+        quantiteColumn.setCellValueFactory(new PropertyValueFactory<>("quantite"));
+        initStockTable();
     }
 
     @FXML
     private void handleConsulterStock() {
-        String reference = referenceField.getText();
-        Article article = clientService.consulterStock(reference);
+        String articlefamille = familleField.getText();
+        List<Article> articles = clientService.rechercherArticlesParFamille(articlefamille);
         stockTable.getItems().clear();
-        if (article != null) {
-            stockTable.getItems().add(article);
+        if (articles.size() != 0) {
+            for (Article article : articles) {
+                stockTable.getItems().add(article);
+                System.out.println(article.toString());
+            }
+        }
+    }
+
+    @FXML
+    private void initStockTable() {
+        List<Article> articles = clientService.consulterStock();
+        stockTable.getItems().clear();
+        if (articles.size() != 0) {
+            for (Article article : articles) {
+                stockTable.getItems().add(article);
+                System.out.println(article.toString());
+            }
         }
     }
 

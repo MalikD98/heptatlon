@@ -29,42 +29,47 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
     }
 
     @Override
-    public Article consulterStock(String reference) throws RemoteException {
-        String query = "SELECT * FROM stock WHERE article_reference = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, reference);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return new Article(
-                        rs.getString("reference"),
-                        rs.getString("libelle"),
-                        rs.getString("famille"),
-                        rs.getBigDecimal("prix")
-                    );
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public List<Article> rechercherArticlesParFamille(String famille, String refMagasin) throws RemoteException {
+    public List<Article> consulterStock(int refMagasin) throws RemoteException {
         String query = "SELECT art.*, stock.qte_stock FROM stock stock " +
                        "JOIN articles art ON stock.article_reference = art.reference " +
-                       "WHERE art.famille = ? AND stock.qte_stock > 0 AND stock.magasin_reference = ?";
+                       "WHERE stock.qte_stock > 0 AND stock.magasin_reference = ?";
         List<Article> articles = new ArrayList<>();
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, famille);
-            stmt.setString(2, refMagasin);
+            stmt.setInt(1, refMagasin);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     articles.add(new Article(
                         rs.getString("reference"),
                         rs.getString("libelle"),
                         rs.getString("famille"),
-                        rs.getBigDecimal("prix")
+                        rs.getBigDecimal("prix"),
+                        rs.getInt("qte_stock")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return articles;
+    }
+
+    @Override
+    public List<Article> rechercherArticlesParFamille(String famille, int refMagasin) throws RemoteException {
+        String query = "SELECT art.*, stock.qte_stock FROM stock stock " +
+                       "JOIN articles art ON stock.article_reference = art.reference " +
+                       "WHERE art.famille LIKE ? AND stock.qte_stock > 0 AND stock.magasin_reference = ?";
+        List<Article> articles = new ArrayList<>();
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, "%" + famille + "%");
+            stmt.setInt(2, refMagasin);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    articles.add(new Article(
+                        rs.getString("reference"),
+                        rs.getString("libelle"),
+                        rs.getString("famille"),
+                        rs.getBigDecimal("prix"),
+                        rs.getInt("qte_stock")
                     ));
                 }
             }

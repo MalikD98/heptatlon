@@ -13,11 +13,11 @@ public interface IServer extends Remote {
     /**
      * Consulter le stock d'un article.
      * 
-     * @param reference Référence de l'article.
-     * @return Article correspondant à la référence.
+     * @param refMagasin Référence du magasin.
+     * @return Liste des articles correspondants.
      * @throws RemoteException Si une erreur de communication RMI se produit.
      */
-    Article consulterStock(String reference) throws RemoteException;
+    List<Article> consulterStock(int refMagasin) throws RemoteException;
 
     /**
      * Rechercher des articles par famille.
@@ -27,7 +27,7 @@ public interface IServer extends Remote {
      * @return Liste des articles correspondants.
      * @throws RemoteException Si une erreur de communication RMI se produit.
      */
-    List<Article> rechercherArticlesParFamille(String famille, String refMagasin) throws RemoteException;
+    List<Article> rechercherArticlesParFamille(String famille, int refMagasin) throws RemoteException;
 
     /**
      * Acheter un article.

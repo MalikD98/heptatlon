@@ -33,12 +33,25 @@ public class ClientService {
 
     /**
      * Consulter le stock d'un article.
+     * @return Article correspondant à la référence.
+     */
+    public List<Article> consulterStock() {
+        try {
+            return server.consulterStock(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Consulter le stock d'un article.
      * @param reference Référence de l'article.
      * @return Article correspondant à la référence.
      */
-    public Article consulterStock(String reference) {
+    public List<Article> rechercherArticlesParFamille(String reference) {
         try {
-            return server.consulterStock(reference);
+            return server.rechercherArticlesParFamille(reference, 1);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

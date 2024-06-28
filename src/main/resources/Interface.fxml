@@ -8,16 +8,18 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22" fx:controller="client.controller.ClientController">
-    <padding><Insets bottom="10" left="10" right="10" top="10" /></padding>
+<GridPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.ClientController">
+    <padding><Insets bottom="10.0" left="10.0" right="10.0" top="10.0" /></padding>
 
     <!-- Section pour consulter le stock -->
     <Label text="Consulter le stock" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-    <TextField fx:id="referenceField" promptText="Référence de l'article" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-    <Button onAction="#handleConsulterStock" text="Consulter" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+    <TextField fx:id="familleField" promptText="Famille de l'article" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+    <Button onAction="#handleConsulterStock" text="Consulter" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <GridPane.margin>
+         <Insets left="10.0" />
+      </GridPane.margin></Button>
 
     <TableView fx:id="stockTable" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
         <columns>
@@ -28,19 +30,13 @@
         </columns>
     </TableView>
 
-    <!-- Section pour passer une commande -->
-    <Label text="Passer une commande" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-    <HBox spacing="10" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="6">
-        <TextField fx:id="clientIdField" promptText="ID Client" />
-        <TextField fx:id="articleRefField" promptText="Référence Article" />
-        <TextField fx:id="quantiteField" promptText="Quantité" />
-        <Button onAction="#handlePasserCommande" text="Commander" />
-    </HBox>
-
     <!-- Section pour récupérer les factures -->
     <Label text="Récupérer les factures" GridPane.columnIndex="3" />
     <TextField fx:id="factureClientIdField" promptText="ID Client" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-    <Button onAction="#handleGetFactures" text="Récupérer" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+    <Button onAction="#handleGetFactures" text="Récupérer" GridPane.columnIndex="4" GridPane.rowIndex="1">
+      <GridPane.margin>
+         <Insets left="10.0" />
+      </GridPane.margin></Button>
 
     <TableView fx:id="facturesTable" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="3">
         <columns>
@@ -49,11 +45,12 @@
             <TableColumn fx:id="dateColumn" text="Date" />
         </columns>
     </TableView>
+     <Button onAction="#handlePasserCommande" text="Passer une commande" GridPane.rowIndex="5" />
    <columnConstraints>
       <ColumnConstraints />
       <ColumnConstraints />
       <ColumnConstraints maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
-      <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints minWidth="10.0" />
       <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
    </columnConstraints>
    <rowConstraints>
@@ -62,7 +59,6 @@
       <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" />
       <RowConstraints />
       <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" />
-      <RowConstraints />
       <RowConstraints />
       <RowConstraints />
       <RowConstraints />
