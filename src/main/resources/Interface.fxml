@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.ClientController">
+<GridPane prefHeight="514.0" prefWidth="918.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.ClientController">
     <padding><Insets bottom="10.0" left="10.0" right="10.0" top="10.0" /></padding>
 
     <!-- Section pour consulter le stock -->
@@ -23,10 +23,11 @@
 
     <TableView fx:id="stockTable" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
         <columns>
-            <TableColumn fx:id="refColumn" text="Référence" />
-            <TableColumn fx:id="familleColumn" text="Famille" />
-            <TableColumn fx:id="prixColumn" text="Prix" />
-            <TableColumn fx:id="quantiteColumn" text="Quantité" />
+            <TableColumn fx:id="refColumn" maxWidth="1.7976931348623157E308" text="Référence" />
+            <TableColumn fx:id="libelleColumn" maxWidth="1.7976931348623157E308" text="Libelle" />
+            <TableColumn fx:id="familleColumn" maxWidth="1.7976931348623157E308" text="Famille" />
+            <TableColumn fx:id="prixColumn" maxWidth="1.7976931348623157E308" text="Prix" />
+            <TableColumn fx:id="quantiteColumn" maxWidth="1.7976931348623157E308" prefWidth="82.0" text="Quantité" />
         </columns>
     </TableView>
 
@@ -38,11 +39,13 @@
          <Insets left="10.0" />
       </GridPane.margin></Button>
 
-    <TableView fx:id="facturesTable" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="3">
+    <TableView fx:id="facturesTable" prefHeight="405.0" prefWidth="485.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="3">
         <columns>
-            <TableColumn fx:id="idFactureColumn" text="ID Facture" />
-            <TableColumn fx:id="montantColumn" text="Montant" />
-            <TableColumn fx:id="dateColumn" text="Date" />
+            <TableColumn fx:id="clientColumn" maxWidth="1.7976931348623157E308" text="Client" />
+            <TableColumn fx:id="idFactureColumn" maxWidth="1.7976931348623157E308" text="ID Facture" />
+            <TableColumn fx:id="montantColumn" maxWidth="1.7976931348623157E308" text="Montant" />
+            <TableColumn fx:id="modePaiementColumn" maxWidth="1.7976931348623157E308" prefWidth="120.0" text="Mode de paiement" />
+            <TableColumn fx:id="dateColumn" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="124.0" text="Date" />
         </columns>
     </TableView>
      <Button onAction="#handlePasserCommande" text="Passer une commande" GridPane.rowIndex="5" />

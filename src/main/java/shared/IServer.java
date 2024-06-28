@@ -42,13 +42,21 @@ public interface IServer extends Remote {
     boolean acheterArticle(String client, String reference, int quantite, String modePaiement) throws RemoteException;
 
     /**
-     * Consulter une facture.
+     * Consulter les articles d'un client facture.
      * 
-     * @param reference Référence de la facture.
-     * @return Facture correspondant à la référence.
+     * @param client ID du client.
+     * @return Factures correspondant au client.
      * @throws RemoteException Si une erreur de communication RMI se produit.
      */
-    Facture consulterFacture(String reference) throws RemoteException;
+    List<Facture> consulterFacture(String client) throws RemoteException;
+
+    /**
+     * Consulter les articles d'un client facture.
+     * 
+     * @return Factures correspondant au client.
+     * @throws RemoteException Si une erreur de communication RMI se produit.
+     */
+    List<Facture> consulterFactureAll() throws RemoteException;
 
     /**
      * Calculer le chiffre d'affaires pour une date donnée.

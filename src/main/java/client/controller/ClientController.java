@@ -31,15 +31,21 @@ public class ClientController {
     @FXML
     private TableColumn<Article, String> refColumn;
     @FXML
+    private TableColumn<Article, String> libelleColumn;
+    @FXML
     private TableColumn<Article, String> familleColumn;
     @FXML
     private TableColumn<Article, Double> prixColumn;
     @FXML
     private TableColumn<Article, Integer> quantiteColumn;
     @FXML
+    private TableColumn<Facture, String> clientColumn;
+    @FXML
     private TableColumn<Facture, String> idFactureColumn;
     @FXML
     private TableColumn<Facture, Double> montantColumn;
+    @FXML
+    private TableColumn<Facture, Double> modePaiementColumn;
     @FXML
     private TableColumn<Facture, String> dateColumn;
 
@@ -53,21 +59,32 @@ public class ClientController {
     private void initialize() {
         // Initialize table columns if necessary
         refColumn.setCellValueFactory(new PropertyValueFactory<>("reference"));
+        libelleColumn.setCellValueFactory(new PropertyValueFactory<>("libelle"));
         familleColumn.setCellValueFactory(new PropertyValueFactory<>("famille"));
         prixColumn.setCellValueFactory(new PropertyValueFactory<>("prix"));
         quantiteColumn.setCellValueFactory(new PropertyValueFactory<>("quantite"));
+
+        clientColumn.setCellValueFactory(new PropertyValueFactory<>("client"));
+        idFactureColumn.setCellValueFactory(new PropertyValueFactory<>("reference"));
+        montantColumn.setCellValueFactory(new PropertyValueFactory<>("montant"));
+        modePaiementColumn.setCellValueFactory(new PropertyValueFactory<>("modePaiement"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("dateCreation"));
+
         initStockTable();
+        initFacturesTable();
     }
 
     @FXML
     private void handleConsulterStock() {
         String articlefamille = familleField.getText();
-        List<Article> articles = clientService.rechercherArticlesParFamille(articlefamille);
+        List<Article> articles = articlefamille.length() > 0 ? 
+            clientService.rechercherArticlesParFamille(articlefamille)
+            :
+            clientService.consulterStock();
         stockTable.getItems().clear();
         if (articles.size() != 0) {
             for (Article article : articles) {
                 stockTable.getItems().add(article);
-                System.out.println(article.toString());
             }
         }
     }
@@ -79,7 +96,6 @@ public class ClientController {
         if (articles.size() != 0) {
             for (Article article : articles) {
                 stockTable.getItems().add(article);
-                System.out.println(article.toString());
             }
         }
     }
@@ -97,7 +113,26 @@ public class ClientController {
     @FXML
     private void handleGetFactures() {
         String clientId = factureClientIdField.getText();
+        List<Facture> factures = clientId.length() > 0 ? 
+            clientService.consulterFacture(clientId)
+            :
+            clientService.consulterFacture();
         facturesTable.getItems().clear();
-        facturesTable.getItems().addAll(clientService.consulterFacture(clientId));
+        if (factures.size() != 0) {
+            for (Facture facture : factures) {
+                facturesTable.getItems().add(facture);
+            }
+        }
+    }
+
+    @FXML
+    private void initFacturesTable() {
+        List<Facture> factures = clientService.consulterFacture();
+        facturesTable.getItems().clear();
+        if (factures.size() != 0) {
+            for (Facture facture : factures) {
+                facturesTable.getItems().add(facture);
+            }
+        }
     }
 }

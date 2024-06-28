@@ -80,26 +80,50 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
     }
 
     @Override
-    public Facture consulterFacture(String reference) throws RemoteException {
-        String query = "SELECT * FROM factures WHERE reference = ?";
+    public List<Facture> consulterFacture(String client) throws RemoteException {
+        String query = "SELECT * FROM factures WHERE client LIKE ?";
+        List<Facture> factures = new ArrayList<>();
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, reference);
+            stmt.setString(1, "%" + client + "%");
             try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return new Facture(
+                while (rs.next()) {
+                    factures.add(new Facture(
                         rs.getString("reference"),
                         rs.getString("client"),
                         rs.getString("mode_paiement"),
                         rs.getBigDecimal("montant"),
                         rs.getTimestamp("date_creation"),
                         rs.getTimestamp("date_enregistrement")
-                    );
+                    ));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public List<Facture> consulterFactureAll() throws RemoteException {
+        String query = "SELECT * FROM factures";
+        List<Facture> factures = new ArrayList<>();
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    factures.add(new Facture(
+                        rs.getString("reference"),
+                        rs.getString("client"),
+                        rs.getString("mode_paiement"),
+                        rs.getBigDecimal("montant"),
+                        rs.getTimestamp("date_creation"),
+                        rs.getTimestamp("date_enregistrement")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return factures;
     }
 
     @Override

@@ -77,9 +77,23 @@ public class ClientService {
      * @param clientId ID du client.
      * @return Liste des factures du client.
      */
-    public Facture consulterFacture(String clientId) {
+    public List<Facture> consulterFacture(String clientId) {
         try {
             return server.consulterFacture(clientId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Récupérer les factures pour un client donné.
+     * @param clientId ID du client.
+     * @return Liste des factures du client.
+     */
+    public List<Facture> consulterFacture() {
+        try {
+            return server.consulterFactureAll();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
