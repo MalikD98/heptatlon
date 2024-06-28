@@ -12,7 +12,7 @@ import shared.Article;
 import shared.Facture;
 import shared.Commande;
 
-public class ClientController {
+public class ConsultationController {
 
     @FXML
     private TextField familleField;
@@ -51,7 +51,7 @@ public class ClientController {
 
     private ClientService clientService;
 
-    public ClientController() {
+    public ConsultationController() {
         clientService = new ClientService();
     }
 

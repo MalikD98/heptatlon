@@ -80,6 +80,32 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
     }
 
     @Override
+    public List<Article> rechercherArticlesParId(int reference, int refMagasin) throws RemoteException {
+        String query = "SELECT art.*, stock.qte_stock FROM stock stock " +
+                       "JOIN articles art ON stock.article_reference = art.reference " +
+                       "WHERE art.reference = ? AND stock.qte_stock > 0 AND stock.magasin_reference = ?";
+        List<Article> articles = new ArrayList<>();
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, reference);
+            stmt.setInt(2, refMagasin);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    articles.add(new Article(
+                        rs.getString("reference"),
+                        rs.getString("libelle"),
+                        rs.getString("famille"),
+                        rs.getBigDecimal("prix"),
+                        rs.getInt("qte_stock")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return articles;
+    }
+
+    @Override
     public List<Facture> consulterFacture(String client) throws RemoteException {
         String query = "SELECT * FROM factures WHERE client LIKE ?";
         List<Facture> factures = new ArrayList<>();

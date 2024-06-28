@@ -59,6 +59,20 @@ public class ClientService {
     }
 
     /**
+     * Consulter le stock d'un article.
+     * @param reference Référence de l'article.
+     * @return Article correspondant à la référence.
+     */
+    public List<Article> rechercherArticlesParId(int reference) {
+        try {
+            return server.rechercherArticlesParId(reference, 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
      * Passer une commande.
      * @param commande Commande à passer.
      * @return True si la commande a été passée avec succès, false sinon.

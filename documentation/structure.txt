@@ -20,7 +20,7 @@ heptatlon/
 │       │   │   ├── service/
 │       │   │   │   └── ClientService.java
 │       │   │   └── controller/
-│       │   │       └── ClientController.java
+│       │   │       └── ConsultationController.java
 │       │   └── Main.java
 │       └── ressources/
 │           └── Interface.fxml

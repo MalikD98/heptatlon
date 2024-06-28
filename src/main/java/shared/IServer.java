@@ -30,6 +30,16 @@ public interface IServer extends Remote {
     List<Article> rechercherArticlesParFamille(String famille, int refMagasin) throws RemoteException;
 
     /**
+     * Rechercher des articles par famille.
+     * 
+     * @param reference Référence de l'article.
+     * @param refMagasin Référence du magasin.
+     * @return Liste des articles correspondants.
+     * @throws RemoteException Si une erreur de communication RMI se produit.
+     */
+    List<Article> rechercherArticlesParId(int reference, int refMagasin) throws RemoteException;
+
+    /**
      * Acheter un article.
      * 
      * @param client ID du client.
