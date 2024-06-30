@@ -27,6 +27,8 @@ public class ConnexionController {
 
     private ClientService clientService;
 
+    public static int magasinReference;
+
 
     public ConnexionController() {
         clientService = new ClientService();
@@ -37,7 +39,10 @@ public class ConnexionController {
         String identifiant = identifiantField.getText();
         String password = passwordField.getText();
 
-        if (clientService.authenticate(identifiant, password) != -1) {
+        if (clientService.authenticate(identifiant, password)) {
+            // Stocker l'ID du magasin dans la variable globale
+            magasinReference = clientService.getMagasinReference();
+
             // Rediriger vers la page de consultation
             try {
                 Parent consultationPage = FXMLLoader.load(getClass().getResource("/Consultation.fxml"));

@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.List;
+import client.controller.ConnexionController;
+
 
 /**
  * ClientService
@@ -18,7 +20,8 @@ import java.util.List;
  */
 public class ClientService {
     private IServer server;
-    private int magasinReference;
+    private int magasinReference = ConnexionController.magasinReference;
+
 
     /**
      * Constructeur du service client.
@@ -28,20 +31,31 @@ public class ClientService {
         try {
             Registry registry = LocateRegistry.getRegistry("localhost", 1099);
             server = (IServer) registry.lookup("Server");
+            System.out.println("Connexion au serveur réussie.");
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Échec de la connexion au serveur.");
         }
     }
 
-    public int authenticate(String identifiant, String password) {
+    public boolean authenticate(String identifiant, String password) {
         try {
-            this.magasinReference = server.authenticate(identifiant, password);
-            return magasinReference;
+            boolean isAuthenticated = server.authenticate(identifiant, password);
+            if (isAuthenticated) {
+                System.out.println("MagasinReference: " + magasinReference);
+                magasinReference = server.getMagasinReference(identifiant);
+            }
+            return isAuthenticated;
         } catch (Exception e) {
             e.printStackTrace();
-            return -1;
+            return false;
         }
     }
+
+    public int getMagasinReference() {
+        return magasinReference;
+    }
+
 
     /**
      * Consulter le stock d'un article dans le magasin par défaut.
@@ -51,7 +65,7 @@ public class ClientService {
     public List<Article> consulterStock() {
         try {
             System.out.println("MagasinReference avant consulterStock : " + magasinReference);
-            if (magasinReference == 0) {
+            if (magasinReference == -1) {
                 System.out.println("Erreur : magasinReference n'est pas initialisé.");
                 return null;
             }

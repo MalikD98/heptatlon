@@ -29,20 +29,20 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
     }
 
     @Override
-    public int authenticate(String identifiant, String password) throws RemoteException {
-        String query = "SELECT reference FROM magasins WHERE identifiant = ? AND mot_de_passe = ?";
+    public boolean authenticate(String identifiant, String password) throws RemoteException {
+        String query = "SELECT COUNT(*) FROM magasins WHERE identifiant = ? AND mot_de_passe = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, identifiant);
             stmt.setString(2, org.apache.commons.codec.digest.DigestUtils.sha256Hex(password));
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next() && rs.getInt(1) > 0) {
-                    return rs.getInt(1);
+                    return true;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1;
+        return false;
     }
 
     @Override

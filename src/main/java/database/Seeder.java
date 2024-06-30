@@ -35,7 +35,7 @@ public class Seeder {
                 "Lille Centre,Lille,59000,H004,LC@59000",
                 "Bordeaux Centre,Bordeaux,33000,H005,BC@33000",
                 "Nice Etoile,Nice,06000,H006,NE@06000",
-                "Nantes Atlantis,Nantes,44000,H007,NANTE@44000",
+                "Nantes Atlantis,Nantes,44000,H007,NA@44000",
                 "Toulouse Capitole,Toulouse,31000,H008,TC@31000",
                 "Strasbourg Rivetoile,Strasbourg,67000,H009,SR@67000",
                 "Montpellier Odysseum,Montpellier,34000,H010,MO@34000"

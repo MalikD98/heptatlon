@@ -109,7 +109,7 @@ public interface IServer extends Remote {
      * @return True si l'authentification réussit, sinon false.
      * @throws RemoteException Si une erreur de communication RMI se produit.
      */
-    int authenticate(String identifiant, String password) throws RemoteException;
+    boolean authenticate(String identifiant, String password) throws RemoteException;
 
     /**
      * Récupère l'id du magasin connecté.
