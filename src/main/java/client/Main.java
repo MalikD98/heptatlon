@@ -4,16 +4,17 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // Chargement de l'interface FXML
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Commandes.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Intro.fxml"));
 
-        // // Création de la scène et définition de ses propriétés
+        Image image = new Image("icon.png");
+        primaryStage.getIcons().add(image);
         primaryStage.setTitle("Gestion de Stock et Facturation");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

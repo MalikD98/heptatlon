@@ -24,7 +24,7 @@ heptatlon/
 │       │   │       └── CommandeController.java
 │       │   └── Main.java
 │       └── ressources/
-│           ├── Interface.fxml
+│           ├── Consultation.fxml
 │           ├── Commandes.fxml
 │           └── logo.png
 └─── pom.xml
