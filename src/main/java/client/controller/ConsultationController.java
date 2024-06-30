@@ -114,7 +114,7 @@ public class ConsultationController {
     private void handlePasserCommande(ActionEvent event) {
         try {
             // Charge la nouvelle vue
-            Parent commandesPage = FXMLLoader.load(getClass().getResource("/Commandes.fxml"));
+            Parent commandesPage = FXMLLoader.load(getClass().getResource("/Commande.fxml"));
             Scene commandesScene = new Scene(commandesPage);
 
             // Récupère la scène actuelle et le stage
@@ -129,10 +129,10 @@ public class ConsultationController {
     }
 
     @FXML
-    private void handleGetFactures() {
-        String clientId = factureClientIdField.getText();
-        List<Facture> factures = clientId.length() > 0 ?
-                clientService.consulterFacture(clientId)
+    private void handleGetArticles() {
+        String factureId = factureClientIdField.getText();
+        List<Facture> factures = factureId.length() > 0 ?
+                clientService.consulterFacture(factureId)
                 :
                 clientService.consulterFacture();
         facturesTable.getItems().clear();
@@ -151,24 +151,6 @@ public class ConsultationController {
             for (Facture facture : factures) {
                 facturesTable.getItems().add(facture);
             }
-        }
-    }
-
-    @FXML
-    private void handleRetourAccueil(ActionEvent event) {
-        try {
-            // Charge la nouvelle vue
-            Parent commandesPage = FXMLLoader.load(getClass().getResource("/Interface.fxml"));
-            Scene commandesScene = new Scene(commandesPage);
-
-            // Récupère la scène actuelle et le stage
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-            // Change la scène du stage
-            stage.setScene(commandesScene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

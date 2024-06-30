@@ -44,6 +44,10 @@ public class IntroController {
                 openMainWindow();
             });
         });
+
+        mediaPlayer.setOnError(() -> {
+            System.err.println("Erreur lors du chargement de la vidéo: " + mediaPlayer.getError().getMessage());
+        });
     }
 
     private void openMainWindow() {

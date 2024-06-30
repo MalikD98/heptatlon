@@ -6,13 +6,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import shared.Article;
 import shared.Commande;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -209,6 +215,7 @@ public class CommandeController {
                 clientService.rechercherArticlesParId(articleId)
                 :
                 clientService.consulterStock();
+            System.out.println("articleId: " + articleId);
             articleTable.getItems().clear();
             if (articles != null && !articles.isEmpty()) {
                 articleTable.getItems().addAll(articles);
@@ -228,6 +235,24 @@ public class CommandeController {
             System.out.println("Commande passée avec succès.");
         } else {
             showError("Échec de la commande.", "Votre commande ne s'est pas enregistr");
+        }
+    }
+
+    @FXML
+    private void handleRetourAccueil(ActionEvent event) {
+        try {
+            // Charge la nouvelle vue
+            Parent commandesPage = FXMLLoader.load(getClass().getResource("/Consultation.fxml"));
+            Scene commandesScene = new Scene(commandesPage);
+
+            // Récupère la scène actuelle et le stage
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            // Change la scène du stage
+            stage.setScene(commandesScene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
