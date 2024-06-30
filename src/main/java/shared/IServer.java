@@ -86,6 +86,18 @@ public interface IServer extends Remote {
      * @throws RemoteException Si une erreur de communication RMI se produit.
      */
     boolean ajouterProduitStock(String reference, int quantite) throws RemoteException;
-
-    boolean passerCommande(Commande commande) throws RemoteException; // Ajout de la méthode passerCommande
+    
+    /**
+     * Passe une commande pour un client, enregistre une facture, met à jour le stock
+     * et insère chaque article de la commande dans une transaction.
+     * 
+     * @param commandes Liste des articles commandés.
+     * @param client ID du client.
+     * @param refMagasin Référence du magasin.
+     * @param modePaiement Mode de paiement utilisé.
+     * @param total Montant total de la facture.
+     * @return True si la commande a été passée avec succès, sinon false.
+     * @throws RemoteException Si une erreur de communication RMI se produit.
+     */
+    boolean passerCommande(List<Commande> commandes, String client, int refMagasin, String modePaiement, BigDecimal total) throws RemoteException;
 }

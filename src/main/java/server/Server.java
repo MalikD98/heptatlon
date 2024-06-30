@@ -4,6 +4,7 @@ import server.ServerImpl;
 
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
+import java.util.concurrent.CountDownLatch;
 
 public class Server {
     public static void main(String[] args) {
@@ -12,7 +13,7 @@ public class Server {
             ServerImpl server = new ServerImpl();
             Naming.rebind("rmi://localhost/Server", server);
             System.out.println("Serveur prêt.");
-            // server.consulterStock(1);
+            new CountDownLatch(1).await();
              
         } catch (Exception e) {
             e.printStackTrace();

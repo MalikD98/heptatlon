@@ -246,32 +246,53 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
     }
 
     @Override
-    public boolean passerCommande(Commande commande) throws RemoteException {
-        String queryCommande = "INSERT INTO commandes (reference, qte_fournie) VALUES (?, ?)";
-        String queryStock = "UPDATE stock SET qte_stock = qte_stock - ? WHERE article_reference = ? AND qte_stock >= ?";
-        
+    public boolean passerCommande(List<Commande> commandes, String client, int magasin, String modePaiement, BigDecimal total) throws RemoteException {
+        String queryInsertFacture = "INSERT INTO factures (client, mode_paiement, montant) VALUES (?, ?, ?)";
+        String queryInsertCommande = "INSERT INTO commandes (magasin_reference, article_reference, facture_reference, qte_fournie) VALUES (?, ?, ?, ?)";
+        String queryUpdateStock = "UPDATE stock SET qte_stock = qte_stock - ? WHERE article_reference = ?";
+    
         try {
             conn.setAutoCommit(false);
-
-            // Ajouter la commande
-            try (PreparedStatement stmtCommande = conn.prepareStatement(queryCommande)) {
-                stmtCommande.setString(1, commande.getReference());
-                stmtCommande.setInt(2, commande.getQteFournie());
-                stmtCommande.executeUpdate();
-            }
-
-            // Mettre à jour le stock
-            try (PreparedStatement stmtStock = conn.prepareStatement(queryStock)) {
-                stmtStock.setInt(1, commande.getQteFournie());
-                stmtStock.setString(2, commande.getReference());
-                stmtStock.setInt(3, commande.getQteFournie());
-                int rowsAffected = stmtStock.executeUpdate();
-                if (rowsAffected == 0) {
-                    conn.rollback();
-                    return false;
+            int factureId;
+    
+            // Insérer la facture avec le montant total fourni
+            try (PreparedStatement stmtFacture = conn.prepareStatement(queryInsertFacture, Statement.RETURN_GENERATED_KEYS)) {
+                stmtFacture.setString(1, client);
+                stmtFacture.setString(2, modePaiement);
+                stmtFacture.setBigDecimal(3, total);
+                stmtFacture.executeUpdate();
+    
+                // Obtenir l'ID de la facture insérée
+                try (ResultSet generatedKeys = stmtFacture.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        factureId = generatedKeys.getInt(1);
+                    } else {
+                        conn.rollback();
+                        return false;
+                    }
                 }
             }
-
+    
+            // Insérer les articles de la commande et mettre à jour le stock
+            for (Commande cmd : commandes) {
+                // Insérer l'article dans la commande
+                try (PreparedStatement stmtCommande = conn.prepareStatement(queryInsertCommande)) {
+                    stmtCommande.setInt(1, magasin);
+                    stmtCommande.setInt(2, cmd.getReference());
+                    stmtCommande.setInt(3, factureId);
+                    stmtCommande.setInt(4, cmd.getQteFournie());
+                    stmtCommande.executeUpdate();
+                }
+    
+                // Mettre à jour le stock de l'article
+                try (PreparedStatement stmtStock = conn.prepareStatement(queryUpdateStock)) {
+                    stmtStock.setInt(1, cmd.getQteFournie());
+                    stmtStock.setInt(2, cmd.getReference());
+                    stmtStock.executeUpdate();
+                }
+            }
+    
+            // Valider la transaction
             conn.commit();
             return true;
         } catch (SQLException e) {
@@ -290,4 +311,5 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
             }
         }
     }
+    
 }

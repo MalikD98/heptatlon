@@ -10,25 +10,25 @@ import java.math.BigDecimal;
  */
 public class Commande implements Serializable {
     private String clientId;
-    private String reference;
+    private int reference;
     private int qteFournie;
 
     // Constructeur par défaut
     public Commande() {}
 
     // Constructeur avec paramètres
-    public Commande(String clientId, String reference, int qteFournie) {
+    public Commande(String clientId, int reference, int qteFournie) {
         this.clientId = clientId;
         this.reference = reference;
         this.qteFournie = qteFournie;
     }
 
     // Getters et setters
-    public String getReference() {
+    public int getReference() {
         return reference;
     }
 
-    public void setReference(String reference) {
+    public void setReference(int reference) {
         this.reference = reference;
     }
 

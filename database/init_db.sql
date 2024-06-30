@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS commandes (
      article_reference INT,     -- Référence de l'article (clé étrangère)
      facture_reference INT,     -- Référence de la facture (clé étrangère)
      qte_fournie INT,           -- Quantité fournie de l'article dans la commande
-     PRIMARY KEY (magasin_reference, article_reference), -- Clé primaire composite
+     PRIMARY KEY (magasin_reference, article_reference, facture_reference), -- Clé primaire composite
     FOREIGN KEY (magasin_reference) REFERENCES magasins(reference), -- Clé étrangère vers magasins
     FOREIGN KEY (article_reference) REFERENCES articles(reference), -- Clé étrangère vers articles
     FOREIGN KEY (facture_reference) REFERENCES factures(reference)  -- Clé étrangère vers factures

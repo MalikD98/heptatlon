@@ -20,8 +20,11 @@ heptatlon/
 │       │   │   ├── service/
 │       │   │   │   └── ClientService.java
 │       │   │   └── controller/
-│       │   │       └── ConsultationController.java
+│       │   │       ├── ConsultationController.java
+│       │   │       └── CommandeController.java
 │       │   └── Main.java
 │       └── ressources/
-│           └── Interface.fxml
+│           ├── Interface.fxml
+│           ├── Commandes.fxml
+│           └── logo.png
 └─── pom.xml

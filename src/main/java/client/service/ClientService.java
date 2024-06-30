@@ -33,8 +33,9 @@ public class ClientService {
     }
 
     /**
-     * Consulter le stock d'un article.
-     * @return Article correspondant à la référence.
+     * Consulter le stock d'un article dans le magasin par défaut.
+     * 
+     * @return Liste des articles en stock.
      */
     public List<Article> consulterStock() {
         try {
@@ -46,13 +47,14 @@ public class ClientService {
     }
 
     /**
-     * Consulter le stock d'un article.
-     * @param reference Référence de l'article.
-     * @return Article correspondant à la référence.
+     * Rechercher des articles par famille dans le magasin par défaut.
+     * 
+     * @param famille Famille des articles à rechercher.
+     * @return Liste des articles correspondant à la famille.
      */
-    public List<Article> rechercherArticlesParFamille(String reference) {
+    public List<Article> rechercherArticlesParFamille(String famille) {
         try {
-            return server.rechercherArticlesParFamille(reference, 1);
+            return server.rechercherArticlesParFamille(famille, 1);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -60,9 +62,10 @@ public class ClientService {
     }
 
     /**
-     * Consulter le stock d'un article.
-     * @param reference Référence de l'article.
-     * @return Article correspondant à la référence.
+     * Rechercher des articles par identifiant dans le magasin par défaut.
+     * 
+     * @param reference Référence de l'article à rechercher.
+     * @return Liste des articles correspondant à la référence.
      */
     public List<Article> rechercherArticlesParId(int reference) {
         try {
@@ -75,12 +78,16 @@ public class ClientService {
 
     /**
      * Passer une commande.
-     * @param commande Commande à passer.
+     * 
+     * @param commandes Liste des articles à commander.
+     * @param client ID du client.
+     * @param modePaiement Mode de paiement utilisé.
+     * @param total Montant total de la commande.
      * @return True si la commande a été passée avec succès, false sinon.
      */
-    public boolean passerCommande(Commande commande) {
+    public boolean passerCommande(List<Commande> commandes, String client, String modePaiement, BigDecimal total) {
         try {
-            return server.passerCommande(commande);
+            return server.passerCommande(commandes, client, 1, modePaiement, total);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -89,6 +96,7 @@ public class ClientService {
 
     /**
      * Récupérer les factures pour un client donné.
+     * 
      * @param clientId ID du client.
      * @return Liste des factures du client.
      */
@@ -102,9 +110,9 @@ public class ClientService {
     }
 
     /**
-     * Récupérer les factures pour un client donné.
-     * @param clientId ID du client.
-     * @return Liste des factures du client.
+     * Récupérer toutes les factures.
+     * 
+     * @return Liste de toutes les factures.
      */
     public List<Facture> consulterFacture() {
         try {
@@ -115,6 +123,12 @@ public class ClientService {
         }
     }
 
+    /**
+     * Calculer le chiffre d'affaires à une date donnée.
+     * 
+     * @param date Date pour laquelle calculer le chiffre d'affaires.
+     * @return Chiffre d'affaires à la date spécifiée.
+     */
     public BigDecimal calculerChiffreAffaires(String date) {
         try {
             return server.calculerChiffreAffaires(date);
@@ -123,7 +137,4 @@ public class ClientService {
             return BigDecimal.ZERO;
         }
     }
-
-
-    // Méthodes supplémentaires selon les besoins
 }
