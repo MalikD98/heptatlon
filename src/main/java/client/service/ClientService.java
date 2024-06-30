@@ -12,12 +12,13 @@ import java.util.List;
 
 /**
  * ClientService
- * 
+ *
  * Service client pour interagir avec le serveur.
  * Cette classe contient des méthodes pour consulter le stock, passer des commandes, et récupérer des factures.
  */
 public class ClientService {
     private IServer server;
+    private int magasinReference;
 
     /**
      * Constructeur du service client.
@@ -32,14 +33,30 @@ public class ClientService {
         }
     }
 
+    public int authenticate(String identifiant, String password) {
+        try {
+            this.magasinReference = server.authenticate(identifiant, password);
+            return magasinReference;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
     /**
      * Consulter le stock d'un article dans le magasin par défaut.
-     * 
+     *
      * @return Liste des articles en stock.
      */
     public List<Article> consulterStock() {
         try {
-            return server.consulterStock(1);
+            System.out.println("MagasinReference avant consulterStock : " + magasinReference);
+            if (magasinReference == 0) {
+                System.out.println("Erreur : magasinReference n'est pas initialisé.");
+                return null;
+            }
+            System.out.println("Consulter stock avec magasinReference : " + magasinReference);
+            return server.consulterStock(magasinReference);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -48,13 +65,13 @@ public class ClientService {
 
     /**
      * Rechercher des articles par famille dans le magasin par défaut.
-     * 
+     *
      * @param famille Famille des articles à rechercher.
      * @return Liste des articles correspondant à la famille.
      */
     public List<Article> rechercherArticlesParFamille(String famille) {
         try {
-            return server.rechercherArticlesParFamille(famille, 1);
+            return server.rechercherArticlesParFamille(famille, magasinReference);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -63,13 +80,13 @@ public class ClientService {
 
     /**
      * Rechercher des articles par identifiant dans le magasin par défaut.
-     * 
+     *
      * @param reference Référence de l'article à rechercher.
      * @return Liste des articles correspondant à la référence.
      */
     public List<Article> rechercherArticlesParId(int reference) {
         try {
-            return server.rechercherArticlesParId(reference, 1);
+            return server.rechercherArticlesParId(reference, magasinReference);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -78,7 +95,7 @@ public class ClientService {
 
     /**
      * Passer une commande.
-     * 
+     *
      * @param commandes Liste des articles à commander.
      * @param client ID du client.
      * @param modePaiement Mode de paiement utilisé.
@@ -87,7 +104,7 @@ public class ClientService {
      */
     public boolean passerCommande(List<Commande> commandes, String client, String modePaiement, BigDecimal total) {
         try {
-            return server.passerCommande(commandes, client, 1, modePaiement, total);
+            return server.passerCommande(commandes, client, magasinReference, modePaiement, total);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -96,7 +113,7 @@ public class ClientService {
 
     /**
      * Récupérer les factures pour un client donné.
-     * 
+     *
      * @param clientId ID du client.
      * @return Liste des factures du client.
      */
@@ -111,7 +128,7 @@ public class ClientService {
 
     /**
      * Récupérer toutes les factures.
-     * 
+     *
      * @return Liste de toutes les factures.
      */
     public List<Facture> consulterFacture() {
@@ -125,7 +142,7 @@ public class ClientService {
 
     /**
      * Calculer le chiffre d'affaires à une date donnée.
-     * 
+     *
      * @param date Date pour laquelle calculer le chiffre d'affaires.
      * @return Chiffre d'affaires à la date spécifiée.
      */

@@ -26,27 +26,30 @@ public class Seeder {
     }
 
     private static void seedMagasins(Connection conn) throws SQLException {
-        String sql = "INSERT INTO magasins (reference, nom, ville, code_postal) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO magasins (reference, nom, ville, code_postal, identifiant, mot_de_passe) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             String[] magasins = {
-                "Paris Centre,Paris,75001",
-                "Lyon Part-Dieu,Lyon,69001",
-                "Marseille Vieux-Port,Marseille,13001",
-                "Lille Centre,Lille,59000",
-                "Bordeaux Centre,Bordeaux,33000",
-                "Nice Etoile,Nice,06000",
-                "Nantes Atlantis,Nantes,44000",
-                "Toulouse Capitole,Toulouse,31000",
-                "Strasbourg Rivetoile,Strasbourg,67000",
-                "Montpellier Odysseum,Montpellier,34000"
+                "Paris Centre,Paris,75001,H001,PC@75001",
+                "Lyon Part-Dieu,Lyon,69001,H002,LPD@69001",
+                "Marseille Vieux-Port,Marseille,13001,H003,MVP@13001",
+                "Lille Centre,Lille,59000,H004,LC@59000",
+                "Bordeaux Centre,Bordeaux,33000,H005,BC@33000",
+                "Nice Etoile,Nice,06000,H006,NE@06000",
+                "Nantes Atlantis,Nantes,44000,H007,NANTE@44000",
+                "Toulouse Capitole,Toulouse,31000,H008,TC@31000",
+                "Strasbourg Rivetoile,Strasbourg,67000,H009,SR@67000",
+                "Montpellier Odysseum,Montpellier,34000,H010,MO@34000"
             };
 
             for (int i = 0; i < magasins.length; i++) {
                 String[] parts = magasins[i].split(",");
+                String sha256hex = org.apache.commons.codec.digest.DigestUtils.sha256Hex(parts[4]);
                 stmt.setInt(1, i + 1);
                 stmt.setString(2, parts[0]);
                 stmt.setString(3, parts[1]);
                 stmt.setString(4, parts[2]);
+                stmt.setString(5, parts[3]);
+                stmt.setString(6, sha256hex);
                 stmt.addBatch();
             }
 

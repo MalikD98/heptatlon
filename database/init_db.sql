@@ -6,7 +6,9 @@ CREATE TABLE IF NOT EXISTS magasins (
     reference INT AUTO_INCREMENT PRIMARY KEY, -- Référence unique du magasin
     nom VARCHAR(255),          -- Nom du magasin
     ville VARCHAR(255),        -- Ville du magasin
-    code_postal VARCHAR(10)    -- Code postal du magasin
+    code_postal VARCHAR(10),    -- Code postal du magasin
+    identifiant VARCHAR(10),    -- Identifiant du magasin
+    mot_de_passe VARCHAR(500)    -- mot de passe du magasin
 );
 
 -- Création de la table Articles

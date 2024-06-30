@@ -100,4 +100,24 @@ public interface IServer extends Remote {
      * @throws RemoteException Si une erreur de communication RMI se produit.
      */
     boolean passerCommande(List<Commande> commandes, String client, int refMagasin, String modePaiement, BigDecimal total) throws RemoteException;
+
+    /**
+     * Authentifier un utilisateur.
+     *
+     * @param identifiant Identifiant de l'utilisateur.
+     * @param password Mot de passe de l'utilisateur.
+     * @return True si l'authentification réussit, sinon false.
+     * @throws RemoteException Si une erreur de communication RMI se produit.
+     */
+    int authenticate(String identifiant, String password) throws RemoteException;
+
+    /**
+     * Récupère l'id du magasin connecté.
+     *
+     * @param identifiant Identifiant de l'utilisateur.
+     * @return L'id du magasin.
+     * @throws RemoteException Si une erreur de communication RMI se produit.
+     */
+    int getMagasinReference(String identifiant) throws RemoteException;
+
 }

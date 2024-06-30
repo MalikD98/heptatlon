@@ -29,6 +29,40 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
     }
 
     @Override
+    public int authenticate(String identifiant, String password) throws RemoteException {
+        String query = "SELECT reference FROM magasins WHERE identifiant = ? AND mot_de_passe = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, identifiant);
+            stmt.setString(2, org.apache.commons.codec.digest.DigestUtils.sha256Hex(password));
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    @Override
+    public int getMagasinReference(String identifiant) throws RemoteException {
+        String query = "SELECT reference FROM magasins WHERE identifiant = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, identifiant);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("reference");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Valeur par défaut en cas d'erreur
+    }
+
+
+    @Override
     public List<Article> consulterStock(int refMagasin) throws RemoteException {
         String query = "SELECT art.*, stock.qte_stock FROM stock stock " +
                        "JOIN articles art ON stock.article_reference = art.reference " +
@@ -246,7 +280,7 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
     }
 
     @Override
-    public boolean passerCommande(List<Commande> commandes, String client, int magasin, String modePaiement, BigDecimal total) throws RemoteException {
+    public boolean passerCommande(List<Commande> commandes, String client, int refMagasin, String modePaiement, BigDecimal total) throws RemoteException {
         String queryInsertFacture = "INSERT INTO factures (client, mode_paiement, montant) VALUES (?, ?, ?)";
         String queryInsertCommande = "INSERT INTO commandes (magasin_reference, article_reference, facture_reference, qte_fournie) VALUES (?, ?, ?, ?)";
         String queryUpdateStock = "UPDATE stock SET qte_stock = qte_stock - ? WHERE article_reference = ?";
@@ -277,7 +311,7 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
             for (Commande cmd : commandes) {
                 // Insérer l'article dans la commande
                 try (PreparedStatement stmtCommande = conn.prepareStatement(queryInsertCommande)) {
-                    stmtCommande.setInt(1, magasin);
+                    stmtCommande.setInt(1, refMagasin);
                     stmtCommande.setInt(2, cmd.getReference());
                     stmtCommande.setInt(3, factureId);
                     stmtCommande.setInt(4, cmd.getQteFournie());

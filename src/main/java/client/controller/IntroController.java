@@ -53,7 +53,7 @@ public class IntroController {
     private void openMainWindow() {
         // Code pour ouvrir la fenêtre principale
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Consultation.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Connexion.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
