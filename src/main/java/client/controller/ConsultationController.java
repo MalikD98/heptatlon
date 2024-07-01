@@ -87,6 +87,11 @@ public class ConsultationController {
     @FXML
     private void handleConsulterStock() {
         String articlefamille = familleField.getText();
+
+        if(articlefamille == null || articlefamille.isEmpty()) {
+            showError("Erreur de saisie", "Veuillez renseigner une famille");
+        }
+
         List<Article> articles = articlefamille.length() > 0 ?
                 clientService.rechercherArticlesParFamille(articlefamille)
                 :
@@ -96,7 +101,9 @@ public class ConsultationController {
             for (Article article : articles) {
                 stockTable.getItems().add(article);
             }
-        }
+        } else {
+        showError("Aucun article trouvé", "Aucun article trouvé pour la famille spécifiée.");
+    }
     }
 
     @FXML
@@ -107,6 +114,8 @@ public class ConsultationController {
             for (Article article : articles) {
                 stockTable.getItems().add(article);
             }
+        } else {
+            showError("Erreur de chargement", "Impossible de charger le stock.");
         }
     }
 
@@ -125,14 +134,18 @@ public class ConsultationController {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+            showError("Erreur de navigation", "Impossible d'ouvrir la page de commande.");
         }
     }
 
     @FXML
-    private void handleGetArticles() {
-        String factureId = factureClientIdField.getText();
-        List<Facture> factures = factureId.length() > 0 ?
-                clientService.consulterFacture(factureId)
+    private void handleGetFactures() {
+        String clientEmail = factureClientIdField.getText();
+        if(clientEmail == null || clientEmail.isEmpty()) {
+            showError("Erreur de saisie", "Veuillez renseigner une email");
+        }
+        List<Facture> factures = clientEmail.length() > 0 ?
+                clientService.consulterFacture(clientEmail)
                 :
                 clientService.consulterFacture();
         facturesTable.getItems().clear();
@@ -140,6 +153,8 @@ public class ConsultationController {
             for (Facture facture : factures) {
                 facturesTable.getItems().add(facture);
             }
+        } else {
+            showError("Aucune facture trouvée", "Aucune facture trouvée pour le client spécifié.");
         }
     }
 
@@ -151,6 +166,8 @@ public class ConsultationController {
             for (Facture facture : factures) {
                 facturesTable.getItems().add(facture);
             }
+        } else {
+            showError("Erreur de chargement", "Impossible de charger les factures.");
         }
     }
 
@@ -169,16 +186,46 @@ public class ConsultationController {
             // Afficher le chiffre d'affaire
             if(chiffreAffaire != null) {
                 chiffreAffaireTexte.setText("Voici le chiffre d'affaire du " + formattedDate + " : " + chiffreAffaire + "€");
-            }else{
+            }else {
                 chiffreAffaireTexte.setText("Pas de chiffre d'affaire pour ce jour");
             }
-
-
         } else {
-            System.out.println("Veuillez sélectionner une date.");
+            showError("Date manquante", "Veuillez sélectionner une date.");
         }
     }
 
+    @FXML
+    private void handleStock(ActionEvent event) {
+        try {
+            // Charge la nouvelle vue
+            Parent commandesPage = FXMLLoader.load(getClass().getResource("/Stock.fxml"));
+            Scene commandesScene = new Scene(commandesPage);
 
+            // Récupère la scène actuelle et le stage
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
+            // Change la scène du stage
+            stage.setScene(commandesScene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showError("Erreur de navigation", "Impossible d'ouvrir la page de stock.");
+        }
+    }
+
+    private void showError(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showInfo(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }

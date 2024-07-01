@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -40,6 +41,9 @@ public class ConnexionController {
         String password = passwordField.getText();
 
         if (clientService.authenticate(identifiant, password)) {
+
+            showInfo("Succes", "Connexion réalisé avec succès");
+
             // Stocker l'ID du magasin dans la variable globale
             magasinReference = clientService.getMagasinReference();
 
@@ -58,7 +62,23 @@ public class ConnexionController {
                 e.printStackTrace();
             }
         } else {
-            errorMessage.setText("Identifiant ou mot de passe incorrect");
+            showError("Erreur de saisie","Identifiant ou mot de passe incorrect");
         }
+    }
+
+    private void showError(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showInfo(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

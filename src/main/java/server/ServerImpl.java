@@ -215,11 +215,12 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
     }
 
     @Override
-    public boolean ajouterProduitStock(String reference, int quantite) throws RemoteException {
-        String query = "UPDATE stock SET qte_stock = qte_stock + ? WHERE article_reference = ?";
+    public boolean ajouterProduitStock(String reference, int quantite, int refMagasin) throws RemoteException {
+        String query = "UPDATE stock SET qte_stock = qte_stock + ? WHERE article_reference = ? and magasin_reference = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, quantite);
             stmt.setString(2, reference);
+            stmt.setInt(3, refMagasin);
             int rowsAffected = stmt.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {

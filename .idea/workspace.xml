@@ -5,19 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="355b5ef4-f9df-4fd6-b85f-36ca5038cf88" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/client/controller/StockController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/init_db.sql" beforeDir="false" afterPath="$PROJECT_DIR$/database/init_db.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/client/service/ClientService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/client/service/ClientService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/server/ServerImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/server/ServerImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/client/controller/CommandeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/controller/CommandeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/controller/ConnexionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/controller/ConnexionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/controller/ConsultationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/controller/ConsultationController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/client/service/ClientService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/service/ClientService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/database/Seeder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/database/Seeder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/server/ServerImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/ServerImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/shared/Commande.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/shared/Commande.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/shared/IServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/shared/IServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Commande.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Commande.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Commandes.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Connexion.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Connexion.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Consultation.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Consultation.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

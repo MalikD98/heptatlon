@@ -167,4 +167,13 @@ public class ClientService {
             return BigDecimal.ZERO;
         }
     }
+
+    public boolean ajouterProduitStock(String reference, int quantite) {
+        try {
+            return server.ajouterProduitStock(reference, quantite, magasinReference);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

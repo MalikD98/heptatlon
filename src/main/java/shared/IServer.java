@@ -85,7 +85,7 @@ public interface IServer extends Remote {
      * @return True si l'ajout est réussi, sinon false.
      * @throws RemoteException Si une erreur de communication RMI se produit.
      */
-    boolean ajouterProduitStock(String reference, int quantite) throws RemoteException;
+    boolean ajouterProduitStock(String reference, int quantite, int refMagasin) throws RemoteException;
     
     /**
      * Passe une commande pour un client, enregistre une facture, met à jour le stock

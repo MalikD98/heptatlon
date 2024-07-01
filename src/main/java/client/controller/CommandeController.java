@@ -66,6 +66,7 @@ public class CommandeController {
     private Button validerCommande;
 
     private ClientService clientService;
+
     private List<Commande> commandes;
 
     public CommandeController() {
@@ -229,14 +230,24 @@ public class CommandeController {
     @FXML
     private void submitCommande(ActionEvent event) {
         String client = clientField.getText();
-        String modePaiement = modePaiementBox.getSelectionModel().getSelectedItem().toString();
+        String modePaiement = modePaiementBox.getSelectionModel().getSelectedItem();
+
+        if (modePaiement == null || modePaiement.isEmpty()) {
+            showError("Mode de paiement manquant", "Veuillez sélectionner un mode de paiement.");
+            return;
+        }
 
         if (clientService.passerCommande(commandes, client, modePaiement)) {
-            System.out.println("Commande passée avec succès.");
+            showInfo("Succès", "Commande passée avec succès.");
+            // Vider la table de commandes et réinitialiser le montant total
+            commandeTable.getItems().clear();
+            commandes.clear();
+            montantTotal.setText("0");
         } else {
-            showError("Échec de la commande.", "Votre commande ne s'est pas enregistr");
+            showError("Échec de la commande", "Votre commande ne s'est pas enregistrée.");
         }
     }
+
 
     @FXML
     private void handleRetourAccueil(ActionEvent event) {
@@ -258,6 +269,14 @@ public class CommandeController {
 
     private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showInfo(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);

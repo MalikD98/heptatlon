@@ -34,8 +34,8 @@
 
     <!-- Section pour récupérer les factures -->
     <Label text="Récupérer les factures" GridPane.columnIndex="3" />
-    <TextField fx:id="factureClientIdField" promptText="ID Client" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-    <Button onAction="#handleGetArticles" text="Récupérer" GridPane.columnIndex="4" GridPane.rowIndex="1">
+    <TextField fx:id="factureClientIdField" promptText="email du client" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+    <Button onAction="#handleGetFactures" text="Récupérer" GridPane.columnIndex="4" GridPane.rowIndex="1">
       <GridPane.margin>
          <Insets left="10.0" />
       </GridPane.margin></Button>
@@ -60,6 +60,7 @@
       </GridPane.margin>
    </Button>
    <DatePicker fx:id="datePickerChiffreAffaire" GridPane.rowIndex="6" />
+   <Button onAction="#handleStock" mnemonicParsing="false" text="Ajouter des articles au stock" GridPane.columnIndex="4" GridPane.rowIndex="6" />
    <columnConstraints>
       <ColumnConstraints />
       <ColumnConstraints />
