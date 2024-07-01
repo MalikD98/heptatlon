@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.ConsultationController">
+    <padding><Insets bottom="10.0" left="10.0" right="10.0" top="10.0" /></padding>
+
+    <!-- Section pour consulter le stock -->
+    <Label text="Consulter le stock" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+    <TextField fx:id="familleField" promptText="Famille de l'article" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+    <Button onAction="#handleConsulterStock" text="Consulter" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <GridPane.margin>
+         <Insets left="10.0" />
+      </GridPane.margin></Button>
+
+    <TableView fx:id="stockTable" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+        <columns>
+            <TableColumn fx:id="refColumn" maxWidth="1.7976931348623157E308" text="Référence" />
+            <TableColumn fx:id="libelleColumn" maxWidth="1.7976931348623157E308" text="Libelle" />
+            <TableColumn fx:id="familleColumn" maxWidth="1.7976931348623157E308" text="Famille" />
+            <TableColumn fx:id="prixColumn" maxWidth="1.7976931348623157E308" text="Prix" />
+            <TableColumn fx:id="quantiteColumn" maxWidth="1.7976931348623157E308" prefWidth="82.0" text="Quantité" />
+        </columns>
+    </TableView>
+
+    <!-- Section pour récupérer les factures -->
+    <Label text="Récupérer les factures" GridPane.columnIndex="3" />
+    <TextField fx:id="factureClientIdField" promptText="email du client" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+    <Button onAction="#handleGetFactures" text="Récupérer" GridPane.columnIndex="4" GridPane.rowIndex="1">
+      <GridPane.margin>
+         <Insets left="10.0" />
+      </GridPane.margin></Button>
+
+    <TableView fx:id="facturesTable" prefHeight="405.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="3">
+        <columns>
+            <TableColumn fx:id="clientColumn" maxWidth="1.7976931348623157E308" text="Client" />
+            <TableColumn fx:id="idFactureColumn" maxWidth="1.7976931348623157E308" text="ID Facture" />
+            <TableColumn fx:id="montantColumn" maxWidth="1.7976931348623157E308" text="Montant" />
+            <TableColumn fx:id="modePaiementColumn" maxWidth="1.7976931348623157E308" prefWidth="129.0" text="Mode de paiement" />
+            <TableColumn fx:id="dateColumn" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="141.0" text="Date" />
+         <TableColumn fx:id="actionColumn" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="70.0" text="Action" />
+        </columns>
+    </TableView>
+     <Button onAction="#handlePasserCommande" text="Passer une commande" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+      <GridPane.margin>
+         <Insets />
+      </GridPane.margin></Button>
+   <Label fx:id="chiffreAffaireTexte" text="Chiffre d'affaire : " GridPane.rowIndex="5" />
+   <Button onAction="#handleCalculerChiffreAffaire" text="Calculer le chiffre d'affaire" GridPane.columnIndex="1" GridPane.rowIndex="6">
+      <GridPane.margin>
+         <Insets left="10.0" />
+      </GridPane.margin>
+   </Button>
+   <DatePicker fx:id="datePickerChiffreAffaire" GridPane.rowIndex="6" />
+   <Button onAction="#handleStock" mnemonicParsing="false" text="Ajouter des articles au stock" GridPane.columnIndex="4" GridPane.rowIndex="6" />
+   <columnConstraints>
+      <ColumnConstraints />
+      <ColumnConstraints />
+      <ColumnConstraints maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
+      <ColumnConstraints minWidth="10.0" />
+      <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" />
+      <RowConstraints />
+      <RowConstraints maxHeight="32.80002441406248" minHeight="2.3999999999999773" prefHeight="13.799963378906227" />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+      <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+   </rowConstraints>
+</GridPane>

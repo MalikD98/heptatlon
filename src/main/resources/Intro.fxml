@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.media.MediaView?>
+
+<StackPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.IntroController">
+   <children>
+      <MediaView fx:id="mediaView" fitHeight="281.25" fitWidth="500.0" />
+   </children>
+</StackPane>

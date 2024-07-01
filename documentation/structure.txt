@@ -1,0 +1,45 @@
+heptatlon/
+├── database/
+│   ├── init_db.sql
+│   ├── update_prices.sql
+│   └── backup_factures.sql
+├── cron/
+│   ├── update_prices_task.sh
+│   └── backup_factures_task.sh
+├── documentation/
+│   ├── mcd.png
+│   └── structure.txt
+├── src/
+│   └── main/
+│       ├── java/
+│       │   ├── server/
+│       │   │   ├── Server.java
+│       │   │   └── ServerImpl.java
+│       │   ├── shared/
+│       │   │   ├── Article.java
+│       │   │   ├── Commande.java
+│       │   │   ├── Facture.java
+│       │   │   └── IServer.java
+│       │   ├── database/
+│       │   │   └── Seeder.java
+│       │   ├── client/
+│       │   │   ├── service/
+│       │   │   │   └── ClientService.java
+│       │   │   └── controller/
+│       │   │       ├── ConsultationController.java
+│       │   │       ├── ConnexionController.java
+│       │   │       ├── IntroController.java
+│       │   │       ├── StockController.java
+│       │   │       ├── FactureDetailController.java
+│       │   │       └── CommandeController.java
+│       │   └── Main.java
+│       └── ressources/
+│           ├── Consultation.fxml
+│           ├── Commandes.fxml
+│           ├── Intro.fxml
+│           ├── FactureDetail.fxml
+│           ├── Connexion.fxml
+│           ├── Stock.fxml
+│           ├── icon.png
+│           └── logo.mp4
+└─── pom.xml
