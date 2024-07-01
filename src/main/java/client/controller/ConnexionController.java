@@ -10,6 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import server.ServerImpl;
 
@@ -49,7 +50,7 @@ public class ConnexionController {
 
             // Rediriger vers la page de consultation
             try {
-                Parent consultationPage = FXMLLoader.load(getClass().getResource("/Consultation.fxml"));
+                Parent consultationPage = FXMLLoader.load(getClass().getResource("interfaces/Consultation.fxml"));
                 Scene consultationScene = new Scene(consultationPage);
 
                 // Récupère la scène actuelle et le stage
@@ -57,6 +58,9 @@ public class ConnexionController {
 
                 // Change la scène du stage
                 stage.setScene(consultationScene);
+                stage.setTitle("Gestion de Stock et Facturation");
+                Image image = new Image("images/icon.png");
+                stage.getIcons().add(image);
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();

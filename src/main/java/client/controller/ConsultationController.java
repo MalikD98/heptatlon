@@ -14,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import shared.Article;
@@ -94,7 +95,7 @@ public class ConsultationController {
                             Facture selectedFacture = getTableView().getItems().get(getIndex());
                             if (selectedFacture != null) {
                                 try {
-                                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/FactureDetail.fxml"));
+                                    FXMLLoader loader = new FXMLLoader(getClass().getResource("interfaces/FactureDetail.fxml"));
                                     Parent root = loader.load();
 
                                     // Get the controller of the facture detail scene
@@ -176,7 +177,7 @@ public class ConsultationController {
     private void handlePasserCommande(ActionEvent event) {
         try {
             // Charge la nouvelle vue
-            Parent commandesPage = FXMLLoader.load(getClass().getResource("/Commande.fxml"));
+            Parent commandesPage = FXMLLoader.load(getClass().getResource("interfaces/Commande.fxml"));
             Scene commandesScene = new Scene(commandesPage);
 
             // Récupère la scène actuelle et le stage
@@ -184,6 +185,9 @@ public class ConsultationController {
 
             // Change la scène du stage
             stage.setScene(commandesScene);
+            stage.setTitle("Gestion de Stock et Facturation");
+            Image image = new Image("images/icon.png");
+            stage.getIcons().add(image);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -251,7 +255,7 @@ public class ConsultationController {
     private void handleStock(ActionEvent event) {
         try {
             // Charge la nouvelle vue
-            Parent commandesPage = FXMLLoader.load(getClass().getResource("/Stock.fxml"));
+            Parent commandesPage = FXMLLoader.load(getClass().getResource("interfaces/Stock.fxml"));
             Scene commandesScene = new Scene(commandesPage);
 
             // Récupère la scène actuelle et le stage
@@ -259,6 +263,9 @@ public class ConsultationController {
 
             // Change la scène du stage
             stage.setScene(commandesScene);
+            stage.setTitle("Gestion de Stock et Facturation");
+            Image image = new Image("images/icon.png");
+            stage.getIcons().add(image);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

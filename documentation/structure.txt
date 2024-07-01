@@ -1,7 +1,11 @@
 heptatlon/
 ├── database/
 │   ├── init_db.sql
-│   └── Seeder.java
+│   ├── update_prices.sql
+│   └── backup_factures.sql
+├── cron/
+│   ├── update_prices_task.sh
+│   └── backup_factures_task.sh
 ├── documentation/
 │   ├── mcd.png
 │   └── structure.txt
@@ -16,6 +20,8 @@ heptatlon/
 │       │   │   ├── Commande.java
 │       │   │   ├── Facture.java
 │       │   │   └── IServer.java
+│       │   ├── database/
+│       │   │   └── Seeder.java
 │       │   ├── client/
 │       │   │   ├── service/
 │       │   │   │   └── ClientService.java
@@ -28,11 +34,15 @@ heptatlon/
 │       │   │       └── CommandeController.java
 │       │   └── Main.java
 │       └── ressources/
-│           ├── Consultation.fxml
-│           ├── Commandes.fxml
-│           ├── Intro.fxml
-│           ├── FactureDetail.fxml
-│           ├── Connexion.fxml
-│           ├── Stock.fxml
-│           └── logo.png
+│           ├── interfaces/
+│           │    ├── Consultation.fxml
+│           │    ├── Commandes.fxml
+│           │    ├── Intro.fxml
+│           │    ├── FactureDetail.fxml
+│           │    ├── Connexion.fxml
+│           │    └── Stock.fxml
+│           ├── images/
+│           │    └── icon.png
+│           └── medias/
+│                └── logo.mp4
 └─── pom.xml
