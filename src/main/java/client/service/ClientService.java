@@ -31,7 +31,6 @@ public class ClientService {
         try {
             Registry registry = LocateRegistry.getRegistry("localhost", 1099);
             server = (IServer) registry.lookup("Server");
-            System.out.println("Connexion au serveur réussie.");
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Échec de la connexion au serveur.");
@@ -42,7 +41,6 @@ public class ClientService {
         try {
             boolean isAuthenticated = server.authenticate(identifiant, password);
             if (isAuthenticated) {
-                System.out.println("MagasinReference: " + magasinReference);
                 magasinReference = server.getMagasinReference(identifiant);
             }
             return isAuthenticated;
@@ -64,12 +62,10 @@ public class ClientService {
      */
     public List<Article> consulterStock() {
         try {
-            System.out.println("MagasinReference avant consulterStock : " + magasinReference);
             if (magasinReference == -1) {
                 System.out.println("Erreur : magasinReference n'est pas initialisé.");
                 return null;
             }
-            System.out.println("Consulter stock avec magasinReference : " + magasinReference);
             return server.consulterStock(magasinReference);
         } catch (Exception e) {
             e.printStackTrace();
@@ -174,6 +170,15 @@ public class ClientService {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public List<Article> getArticlesByFacture(int factureId) {
+        try {
+            return server.getArticlesByFacture(factureId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

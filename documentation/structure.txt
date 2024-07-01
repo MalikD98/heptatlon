@@ -22,11 +22,17 @@ heptatlon/
 │       │   │   └── controller/
 │       │   │       ├── ConsultationController.java
 │       │   │       ├── ConnexionController.java
+│       │   │       ├── IntroController.java
+│       │   │       ├── StockController.java
+│       │   │       ├── FactureDetailController.java
 │       │   │       └── CommandeController.java
 │       │   └── Main.java
 │       └── ressources/
 │           ├── Consultation.fxml
 │           ├── Commandes.fxml
+│           ├── Intro.fxml
+│           ├── FactureDetail.fxml
 │           ├── Connexion.fxml
+│           ├── Stock.fxml
 │           └── logo.png
 └─── pom.xml

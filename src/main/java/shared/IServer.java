@@ -119,4 +119,6 @@ public interface IServer extends Remote {
      */
     int getMagasinReference(String identifiant) throws RemoteException;
 
+    List<Article> getArticlesByFacture(int factureId) throws RemoteException;
+
 }

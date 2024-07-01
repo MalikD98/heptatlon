@@ -10,7 +10,7 @@ import java.util.Date;
  * Classe représentant une facture.
  */
 public class Facture implements Serializable {
-    private String reference;
+    private int reference;
     private String client;
     private String modePaiement;
     private BigDecimal montant;
@@ -21,7 +21,7 @@ public class Facture implements Serializable {
     public Facture() {}
 
     // Constructeur avec paramètres
-    public Facture(String reference, String client, String modePaiement, BigDecimal montant, Date dateCreation, Date dateEnregistrement) {
+    public Facture(int reference, String client, String modePaiement, BigDecimal montant, Date dateCreation, Date dateEnregistrement) {
         this.reference = reference;
         this.client = client;
         this.modePaiement = modePaiement;
@@ -31,11 +31,11 @@ public class Facture implements Serializable {
     }
 
     // Getters et setters
-    public String getReference() {
+    public int getReference() {
         return reference;
     }
 
-    public void setReference(String reference) {
+    public void setReference(int reference) {
         this.reference = reference;
     }
 

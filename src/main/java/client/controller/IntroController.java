@@ -46,7 +46,12 @@ public class IntroController {
         });
 
         mediaPlayer.setOnError(() -> {
-            System.err.println("Erreur lors du chargement de la vidéo: " + mediaPlayer.getError().getMessage());
+            Platform.runLater(() -> {
+                Stage stage = (Stage) mediaView.getScene().getWindow();
+                stage.close();
+                openMainWindow();
+            });
+            // System.err.println("Erreur lors du chargement de la vidéo: " + mediaPlayer.getError().getMessage());
         });
     }
 

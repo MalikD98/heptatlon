@@ -47,6 +47,7 @@
             <TableColumn fx:id="montantColumn" maxWidth="1.7976931348623157E308" text="Montant" />
             <TableColumn fx:id="modePaiementColumn" maxWidth="1.7976931348623157E308" prefWidth="129.0" text="Mode de paiement" />
             <TableColumn fx:id="dateColumn" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="141.0" text="Date" />
+         <TableColumn fx:id="actionColumn" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="70.0" text="Action" />
         </columns>
     </TableView>
      <Button onAction="#handlePasserCommande" text="Passer une commande" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="6">

@@ -217,7 +217,6 @@ public class CommandeController {
                 clientService.rechercherArticlesParId(articleId)
                 :
                 clientService.consulterStock();
-            System.out.println("articleId: " + articleId);
             articleTable.getItems().clear();
             if (articles != null && !articles.isEmpty()) {
                 articleTable.getItems().addAll(articles);

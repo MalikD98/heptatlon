@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import shared.Article;
 import shared.Facture;
 import shared.Commande;
@@ -58,6 +59,8 @@ public class ConsultationController {
     private TableColumn<Facture, Double> modePaiementColumn;
     @FXML
     private TableColumn<Facture, String> dateColumn;
+    @FXML
+    private TableColumn<Facture, Void> actionColumn;
 
     private ClientService clientService;
 
@@ -79,6 +82,56 @@ public class ConsultationController {
         montantColumn.setCellValueFactory(new PropertyValueFactory<>("montant"));
         modePaiementColumn.setCellValueFactory(new PropertyValueFactory<>("modePaiement"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("dateCreation"));
+
+        actionColumn.setCellFactory(new Callback<TableColumn<Facture, Void>, TableCell<Facture, Void>>() {
+            @Override
+            public TableCell<Facture, Void> call(final TableColumn<Facture, Void> param) {
+                final TableCell<Facture, Void> cell = new TableCell<Facture, Void>() {
+                    private final Button btn = new Button("Détails");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            Facture selectedFacture = getTableView().getItems().get(getIndex());
+                            if (selectedFacture != null) {
+                                try {
+                                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/FactureDetail.fxml"));
+                                    Parent root = loader.load();
+
+                                    // Get the controller of the facture detail scene
+                                    FactureDetailController controller = loader.getController();
+                                    controller.setFacture(selectedFacture);
+
+                                    // Open the new scene
+                                    Stage stage = new Stage();
+                                    stage.setScene(new Scene(root));
+                                    stage.show();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                // Show alert if no facture is selected
+                                Alert alert = new Alert(Alert.AlertType.WARNING);
+                                alert.setTitle("No Selection");
+                                alert.setHeaderText("No Facture Selected");
+                                alert.setContentText("Please select a facture in the table.");
+                                alert.showAndWait();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        });
 
         initStockTable();
         initFacturesTable();

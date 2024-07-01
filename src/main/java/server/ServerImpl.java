@@ -151,7 +151,7 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     factures.add(new Facture(
-                        rs.getString("reference"),
+                        rs.getInt("reference"),
                         rs.getString("client"),
                         rs.getString("mode_paiement"),
                         rs.getBigDecimal("montant"),
@@ -177,7 +177,7 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     factures.add(new Facture(
-                        rs.getString("reference"),
+                        rs.getInt("reference"),
                         rs.getString("client"),
                         rs.getString("mode_paiement"),
                         rs.getBigDecimal("montant"),
@@ -357,6 +357,37 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public List<Article> getArticlesByFacture(int factureId) throws RemoteException {
+        List<Article> articles = new ArrayList<>();
+        String query = "SELECT a.reference, a.libelle, a.famille, a.prix, c.qte_fournie "
+                     + "FROM articles a "
+                     + "JOIN commandes c ON a.reference = c.article_reference "
+                     + "WHERE c.facture_reference = ?";
+
+        try (PreparedStatement statement = conn.prepareStatement(query)) {
+
+            statement.setInt(1, factureId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String reference = resultSet.getString("reference");
+                String libelle = resultSet.getString("libelle");
+                String famille = resultSet.getString("famille");
+                BigDecimal prix = resultSet.getBigDecimal("prix");
+                int quantite = resultSet.getInt("qte_fournie");
+
+                articles.add(new Article(reference, libelle, famille, prix, quantite));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RemoteException("Erreur lors de la récupération des articles de la facture.", e);
+        }
+
+        return articles;
     }
     
 }
