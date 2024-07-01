@@ -1,10 +1,13 @@
 package database;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Seeder {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/heptathlon";
@@ -18,7 +21,6 @@ public class Seeder {
             seedStock(conn);
             seedFactures(conn);
             seedCommandes(conn);
-            updateFactureMontants(conn);
             System.out.println("Seeding terminé avec succès !");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -108,24 +110,45 @@ public class Seeder {
     }
 
     private static void seedCommandes(Connection conn) throws SQLException {
-        String sql = "INSERT INTO commandes (magasin_reference, article_reference, facture_reference, qte_fournie) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        String getPricesSql = "SELECT reference, prix FROM articles";
+        String insertCommandSql = "INSERT INTO commandes (magasin_reference, article_reference, facture_reference, qte_fournie, montant) VALUES (?, ?, ?, ?, ?)";
+
+        // Récupérer tous les prix des articles et les stocker dans une Map
+        Map<Integer, BigDecimal> articlePrices = new HashMap<>();
+        try (PreparedStatement getPricesStmt = conn.prepareStatement(getPricesSql);
+             ResultSet rs = getPricesStmt.executeQuery()) {
+            while (rs.next()) {
+                int reference = rs.getInt("reference");
+                BigDecimal prix = rs.getBigDecimal("prix");
+                articlePrices.put(reference, prix);
+            }
+        }
+
+        // Insérer les commandes avec les montants calculés
+        try (PreparedStatement insertCommandStmt = conn.prepareStatement(insertCommandSql)) {
             for (int i = 1; i <= 10; i++) {
                 for (int j = 1; j <= 15; j++) {
-                    stmt.setInt(1, i);
-                    stmt.setInt(2, j);
-                    stmt.setInt(3, i);  // Facture référence égale au magasin référence pour simplifier
-                    stmt.setInt(4, (int) (Math.random() * 20 + 1));
-                    stmt.addBatch();
+                    int qte_fournie = (int) (Math.random() * 20 + 1);
+                    BigDecimal prix = articlePrices.get(j);
+                    BigDecimal montant = prix.multiply(BigDecimal.valueOf(qte_fournie));
+
+                    insertCommandStmt.setInt(1, i);
+                    insertCommandStmt.setInt(2, j);
+                    insertCommandStmt.setInt(3, i);  // Facture référence égale au magasin référence pour simplifier
+                    insertCommandStmt.setInt(4, qte_fournie);
+                    insertCommandStmt.setBigDecimal(5, montant);
+                    insertCommandStmt.addBatch();
                 }
             }
 
-            stmt.executeBatch();
+            insertCommandStmt.executeBatch();
         }
     }
 
+
+
     private static void seedFactures(Connection conn) throws SQLException {
-        String sql = "INSERT INTO factures (reference, client, mode_paiement, montant) VALUES (?, ?, ?, 0)"; // Montant initialisé à 0
+        String sql = "INSERT INTO factures (reference, client, mode_paiement) VALUES (?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             String[] emails = {
                 "jean.dupont@example.com", "marie.martin@example.com", "pierre.durand@example.com", 
@@ -144,13 +167,6 @@ public class Seeder {
             }
 
             stmt.executeBatch();
-        }
-    }
-
-    private static void updateFactureMontants(Connection conn) throws SQLException {
-        String sql = "UPDATE factures SET montant = (SELECT SUM(a.prix * c.qte_fournie) FROM commandes c JOIN articles a ON c.article_reference = a.reference WHERE c.facture_reference = factures.reference)";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.executeUpdate();
         }
     }
 }

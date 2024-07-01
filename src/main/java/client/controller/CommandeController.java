@@ -125,7 +125,8 @@ public class CommandeController {
                                     commandes.add(new Commande(
                                         "",
                                         Integer.valueOf(article.getReference()),
-                                        quantiteBigDecimal.intValue()
+                                        quantiteBigDecimal.intValue(),
+                                        montant
                                     ));
         
                                     BigDecimal total = new BigDecimal(montantTotal.getText()).add(montant);
@@ -229,9 +230,8 @@ public class CommandeController {
     private void submitCommande(ActionEvent event) {
         String client = clientField.getText();
         String modePaiement = modePaiementBox.getSelectionModel().getSelectedItem().toString();
-        BigDecimal total = new BigDecimal(montantTotal.getText());
 
-        if (clientService.passerCommande(commandes, client, modePaiement, total)) {
+        if (clientService.passerCommande(commandes, client, modePaiement)) {
             System.out.println("Commande passée avec succès.");
         } else {
             showError("Échec de la commande.", "Votre commande ne s'est pas enregistr");

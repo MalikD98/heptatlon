@@ -21,10 +21,12 @@ heptatlon/
 │       │   │   │   └── ClientService.java
 │       │   │   └── controller/
 │       │   │       ├── ConsultationController.java
+│       │   │       ├── ConnexionController.java
 │       │   │       └── CommandeController.java
 │       │   └── Main.java
 │       └── ressources/
 │           ├── Consultation.fxml
 │           ├── Commandes.fxml
+│           ├── Connexion.fxml
 │           └── logo.png
 └─── pom.xml

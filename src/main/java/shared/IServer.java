@@ -75,7 +75,7 @@ public interface IServer extends Remote {
      * @return Chiffre d'affaires de la date spécifiée.
      * @throws RemoteException Si une erreur de communication RMI se produit.
      */
-    BigDecimal calculerChiffreAffaires(String date) throws RemoteException;
+    BigDecimal calculerChiffreAffaires(String date, int refMagasin) throws RemoteException;
 
     /**
      * Ajouter des produits au stock.
@@ -95,11 +95,10 @@ public interface IServer extends Remote {
      * @param client ID du client.
      * @param refMagasin Référence du magasin.
      * @param modePaiement Mode de paiement utilisé.
-     * @param total Montant total de la facture.
      * @return True si la commande a été passée avec succès, sinon false.
      * @throws RemoteException Si une erreur de communication RMI se produit.
      */
-    boolean passerCommande(List<Commande> commandes, String client, int refMagasin, String modePaiement, BigDecimal total) throws RemoteException;
+    boolean passerCommande(List<Commande> commandes, String client, int refMagasin, String modePaiement) throws RemoteException;
 
     /**
      * Authentifier un utilisateur.

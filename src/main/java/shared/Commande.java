@@ -12,15 +12,17 @@ public class Commande implements Serializable {
     private String clientId;
     private int reference;
     private int qteFournie;
+    private BigDecimal montant;
 
     // Constructeur par défaut
     public Commande() {}
 
     // Constructeur avec paramètres
-    public Commande(String clientId, int reference, int qteFournie) {
+    public Commande(String clientId, int reference, int qteFournie, BigDecimal montant) {
         this.clientId = clientId;
         this.reference = reference;
         this.qteFournie = qteFournie;
+        this.montant = montant;
     }
 
     // Getters et setters
@@ -38,6 +40,10 @@ public class Commande implements Serializable {
 
     public void setQteFournie(int qteFournie) {
         this.qteFournie = qteFournie;
+    }
+
+    public BigDecimal getMontant() {
+        return montant;
     }
 
     @Override

@@ -141,7 +141,10 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
 
     @Override
     public List<Facture> consulterFacture(String client) throws RemoteException {
-        String query = "SELECT * FROM factures WHERE client LIKE ?";
+        String query = "SELECT SUM(montant) montant, fa.* " +
+                "FROM commandes cmd " +
+                "JOIN factures fa on cmd.facture_reference = fa.reference " +
+                "WHERE fa.client like ?";
         List<Facture> factures = new ArrayList<>();
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, "%" + client + "%");
@@ -165,7 +168,10 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
 
     @Override
     public List<Facture> consulterFactureAll() throws RemoteException {
-        String query = "SELECT * FROM factures";
+        String query = "SELECT SUM(montant) montant, fa.* " +
+                "FROM commandes cmd " +
+                "JOIN factures fa on cmd.facture_reference = fa.reference " +
+                "group by fa.client";
         List<Facture> factures = new ArrayList<>();
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             try (ResultSet rs = stmt.executeQuery()) {
@@ -187,10 +193,16 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
     }
 
     @Override
-    public BigDecimal calculerChiffreAffaires(String date) throws RemoteException {
-        String query = "SELECT SUM(montant) AS chiffre_affaires FROM factures WHERE DATE(date_creation) = ?";
+    public BigDecimal calculerChiffreAffaires(String date, int refMagasin) throws RemoteException {
+        String query = "SELECT SUM(montant) AS chiffre_affaires, fa.client " +
+                "FROM commandes cmd " +
+                "JOIN factures fa on cmd.facture_reference = fa.reference " +
+                "WHERE DATE(date_creation) = ? " +
+                "and cmd.magasin_reference = ? " +
+                "group by fa.client";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, date);
+            stmt.setInt(2, refMagasin);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return rs.getBigDecimal("chiffre_affaires");
@@ -280,9 +292,9 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
     }
 
     @Override
-    public boolean passerCommande(List<Commande> commandes, String client, int refMagasin, String modePaiement, BigDecimal total) throws RemoteException {
-        String queryInsertFacture = "INSERT INTO factures (client, mode_paiement, montant) VALUES (?, ?, ?)";
-        String queryInsertCommande = "INSERT INTO commandes (magasin_reference, article_reference, facture_reference, qte_fournie) VALUES (?, ?, ?, ?)";
+    public boolean passerCommande(List<Commande> commandes, String client, int refMagasin, String modePaiement) throws RemoteException {
+        String queryInsertFacture = "INSERT INTO factures (client, mode_paiement) VALUES (?, ?)";
+        String queryInsertCommande = "INSERT INTO commandes (magasin_reference, article_reference, facture_reference, qte_fournie, montant) VALUES (?, ?, ?, ?, ?)";
         String queryUpdateStock = "UPDATE stock SET qte_stock = qte_stock - ? WHERE article_reference = ?";
     
         try {
@@ -293,7 +305,6 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
             try (PreparedStatement stmtFacture = conn.prepareStatement(queryInsertFacture, Statement.RETURN_GENERATED_KEYS)) {
                 stmtFacture.setString(1, client);
                 stmtFacture.setString(2, modePaiement);
-                stmtFacture.setBigDecimal(3, total);
                 stmtFacture.executeUpdate();
     
                 // Obtenir l'ID de la facture insérée
@@ -315,6 +326,7 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
                     stmtCommande.setInt(2, cmd.getReference());
                     stmtCommande.setInt(3, factureId);
                     stmtCommande.setInt(4, cmd.getQteFournie());
+                    stmtCommande.setBigDecimal(5, cmd.getMontant());
                     stmtCommande.executeUpdate();
                 }
     

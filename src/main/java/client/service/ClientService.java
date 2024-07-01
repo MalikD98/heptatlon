@@ -113,12 +113,11 @@ public class ClientService {
      * @param commandes Liste des articles à commander.
      * @param client ID du client.
      * @param modePaiement Mode de paiement utilisé.
-     * @param total Montant total de la commande.
      * @return True si la commande a été passée avec succès, false sinon.
      */
-    public boolean passerCommande(List<Commande> commandes, String client, String modePaiement, BigDecimal total) {
+    public boolean passerCommande(List<Commande> commandes, String client, String modePaiement) {
         try {
-            return server.passerCommande(commandes, client, magasinReference, modePaiement, total);
+            return server.passerCommande(commandes, client, magasinReference, modePaiement);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -162,7 +161,7 @@ public class ClientService {
      */
     public BigDecimal calculerChiffreAffaires(String date) {
         try {
-            return server.calculerChiffreAffaires(date);
+            return server.calculerChiffreAffaires(date, magasinReference);
         } catch (Exception e) {
             e.printStackTrace();
             return BigDecimal.ZERO;
