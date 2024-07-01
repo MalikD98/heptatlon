@@ -61,6 +61,7 @@ public class IntroController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Connexion.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
+            stage.setTitle("Connexion");
             stage.setScene(new Scene(root));
             Image image = new Image("icon.png");
             stage.getIcons().add(image);

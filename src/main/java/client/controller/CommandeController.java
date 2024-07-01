@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -257,6 +258,9 @@ public class CommandeController {
 
             // Récupère la scène actuelle et le stage
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Image image = new Image("icon.png");
+            stage.getIcons().add(image);
+            stage.setTitle("Gestion de Stock et Facturation");
 
             // Change la scène du stage
             stage.setScene(commandesScene);
