@@ -22,7 +22,7 @@ public class IntroController {
     @FXML
     public void initialize() {
         // Chemin vers la vidéo
-        String videoPath = getClass().getResource("medias/logo.mp4").toExternalForm();
+        String videoPath = getClass().getResource("/logo.mp4").toExternalForm();
         
         // Créer un Media
         Media media = new Media(videoPath);
@@ -58,12 +58,11 @@ public class IntroController {
     private void openMainWindow() {
         // Code pour ouvrir la fenêtre principale
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("interfaces/Connexion.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Connexion.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
-            stage.setTitle("Gestion de Stock et Facturation");
-            Image image = new Image("images/icon.png");
+            Image image = new Image("icon.png");
             stage.getIcons().add(image);
             stage.show();
         } catch (IOException e) {

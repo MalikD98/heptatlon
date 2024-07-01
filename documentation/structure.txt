@@ -34,15 +34,12 @@ heptatlon/
 │       │   │       └── CommandeController.java
 │       │   └── Main.java
 │       └── ressources/
-│           ├── interfaces/
-│           │    ├── Consultation.fxml
-│           │    ├── Commandes.fxml
-│           │    ├── Intro.fxml
-│           │    ├── FactureDetail.fxml
-│           │    ├── Connexion.fxml
-│           │    └── Stock.fxml
-│           ├── images/
-│           │    └── icon.png
-│           └── medias/
-│                └── logo.mp4
+│           ├── Consultation.fxml
+│           ├── Commandes.fxml
+│           ├── Intro.fxml
+│           ├── FactureDetail.fxml
+│           ├── Connexion.fxml
+│           ├── Stock.fxml
+│           ├── icon.png
+│           └── logo.mp4
 └─── pom.xml

@@ -11,7 +11,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -113,7 +112,7 @@ public class StockController {
     private void handleRetourAccueil(ActionEvent event) {
         try {
             // Charge la nouvelle vue
-            Parent commandesPage = FXMLLoader.load(getClass().getResource("interfaces/Consultation.fxml"));
+            Parent commandesPage = FXMLLoader.load(getClass().getResource("/Consultation.fxml"));
             Scene commandesScene = new Scene(commandesPage);
 
             // Récupère la scène actuelle et le stage
@@ -121,9 +120,6 @@ public class StockController {
 
             // Change la scène du stage
             stage.setScene(commandesScene);
-            stage.setTitle("Gestion de Stock et Facturation");
-            Image image = new Image("images/icon.png");
-            stage.getIcons().add(image);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

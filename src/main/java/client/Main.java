@@ -11,11 +11,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("interfaces/Connexion.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Connexion.fxml"));
 
-        Image image = new Image("images/icon.png");
+        Image image = new Image("icon.png");
         primaryStage.getIcons().add(image);
-        primaryStage.setTitle("Gestion de Stock et Facturation");
+        primaryStage.setTitle("Connexion");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
