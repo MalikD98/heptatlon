@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import shared.Article;
 import shared.Facture;
-import shared.Commande;
 
 public class ConsultationController {
 
@@ -268,14 +267,6 @@ public class ConsultationController {
 
     private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    private void showInfo(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);

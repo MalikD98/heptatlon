@@ -17,10 +17,8 @@ public class Facture implements Serializable {
     private Date dateCreation;
     private Date dateEnregistrement;
 
-    // Constructeur par défaut
     public Facture() {}
 
-    // Constructeur avec paramètres
     public Facture(int reference, String client, String modePaiement, BigDecimal montant, Date dateCreation, Date dateEnregistrement) {
         this.reference = reference;
         this.client = client;
@@ -30,7 +28,6 @@ public class Facture implements Serializable {
         this.dateEnregistrement = dateEnregistrement;
     }
 
-    // Getters et setters
     public int getReference() {
         return reference;
     }
@@ -51,33 +48,14 @@ public class Facture implements Serializable {
         return modePaiement;
     }
 
-    public void setModePaiement(String modePaiement) {
-        this.modePaiement = modePaiement;
-    }
-
     public BigDecimal getMontant() {
         return montant;
-    }
-
-    public void setMontant(BigDecimal montant) {
-        this.montant = montant;
     }
 
     public Date getDateCreation() {
         return dateCreation;
     }
 
-    public void setDateCreation(Date dateCreation) {
-        this.dateCreation = dateCreation;
-    }
-
-    public Date getDateEnregistrement() {
-        return dateEnregistrement;
-    }
-
-    public void setDateEnregistrement(Date dateEnregistrement) {
-        this.dateEnregistrement = dateEnregistrement;
-    }
 
     @Override
     public String toString() {

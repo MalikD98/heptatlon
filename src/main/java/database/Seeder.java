@@ -11,8 +11,8 @@ import java.util.Map;
 
 public class Seeder {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/heptathlon";
-    private static final String USER = "root"; // Utilisateur par défaut de XAMPP
-    private static final String PASS = "";    // Mot de passe par défaut de XAMPP (vide)
+    private static final String USER = "root";
+    private static final String PASS = "";
 
     public static void main(String[] args) {
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
@@ -134,7 +134,7 @@ public class Seeder {
 
                     insertCommandStmt.setInt(1, i);
                     insertCommandStmt.setInt(2, j);
-                    insertCommandStmt.setInt(3, i);  // Facture référence égale au magasin référence pour simplifier
+                    insertCommandStmt.setInt(3, i);
                     insertCommandStmt.setInt(4, qte_fournie);
                     insertCommandStmt.setBigDecimal(5, montant);
                     insertCommandStmt.addBatch();

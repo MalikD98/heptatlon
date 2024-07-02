@@ -1,7 +1,5 @@
 package server;
 
-import server.ServerImpl;
-
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 import java.util.concurrent.CountDownLatch;

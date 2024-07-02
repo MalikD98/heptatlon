@@ -15,10 +15,9 @@ public class Article implements Serializable {
     private BigDecimal prix;
     private int quantite;
 
-    // Constructeur par défaut
+
     public Article() {}
 
-    // Constructeur avec paramètres
     public Article(String reference, String libelle, String famille, BigDecimal prix, int quantite) {
         this.reference = reference;
         this.libelle = libelle;
@@ -27,7 +26,6 @@ public class Article implements Serializable {
         this.quantite = quantite;
     }
 
-    // Getters et setters
     public String getReference() {
         return reference;
     }

@@ -21,7 +21,7 @@ public class IntroController {
 
     @FXML
     public void initialize() {
-        // Chemin vers la vidéo
+
         String videoPath = getClass().getResource("/logo.mp4").toExternalForm();
         
         // Créer un Media
@@ -32,8 +32,7 @@ public class IntroController {
         
         // Associer le MediaPlayer au MediaView
         mediaView.setMediaPlayer(mediaPlayer);
-        
-        // Démarrer la vidéo
+
         mediaPlayer.play();
         
         // Fermer l'intro et ouvrir la fenêtre principale après la fin de la vidéo

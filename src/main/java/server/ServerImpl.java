@@ -58,7 +58,7 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1; // Valeur par défaut en cas d'erreur
+        return -1;
     }
 
 
@@ -386,7 +386,6 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
             e.printStackTrace();
             throw new RemoteException("Erreur lors de la récupération des articles de la facture.", e);
         }
-
         return articles;
     }
     

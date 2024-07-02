@@ -37,6 +37,13 @@ public class ClientService {
         }
     }
 
+    /**
+     * Authentifie un utilisateur en vérifiant si l'identifiant et le mot de passe existent en base de données.
+     *
+     * @param identifiant L'identifiant de l'utilisateur.
+     * @param password Le mot de passe de l'utilisateur.
+     * @return True si l'utilisateur est authentifié avec succès, False sinon.
+     */
     public boolean authenticate(String identifiant, String password) {
         try {
             boolean isAuthenticated = server.authenticate(identifiant, password);
@@ -48,10 +55,6 @@ public class ClientService {
             e.printStackTrace();
             return false;
         }
-    }
-
-    public int getMagasinReference() {
-        return magasinReference;
     }
 
 
@@ -164,6 +167,13 @@ public class ClientService {
         }
     }
 
+    /**
+     * Ajoute une quantité spécifique d'un produit au stock du magasin.
+     *
+     * @param reference La référence du produit.
+     * @param quantite La quantité à ajouter au stock.
+     * @return True si l'ajout est effectué avec succès, False sinon.
+     */
     public boolean ajouterProduitStock(String reference, int quantite) {
         try {
             return server.ajouterProduitStock(reference, quantite, magasinReference);
@@ -173,6 +183,12 @@ public class ClientService {
         }
     }
 
+    /**
+     * Récupère la liste des articles associés à une facture spécifique.
+     *
+     * @param factureId L'identifiant de la facture.
+     * @return Une liste d'articles associés à la facture, ou null en cas d'échec.
+     */
     public List<Article> getArticlesByFacture(int factureId) {
         try {
             return server.getArticlesByFacture(factureId);
@@ -180,5 +196,9 @@ public class ClientService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public int getMagasinReference() {
+        return magasinReference;
     }
 }

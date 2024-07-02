@@ -119,6 +119,13 @@ public interface IServer extends Remote {
      */
     int getMagasinReference(String identifiant) throws RemoteException;
 
+    /**
+     * Récupère la liste des articles associés à une facture spécifique.
+     *
+     * @param factureId L'identifiant de la facture.
+     * @return Une liste d'articles associés à la facture.
+     * @throws RemoteException Si une erreur de communication se produit lors de l'appel au serveur.
+     */
     List<Article> getArticlesByFacture(int factureId) throws RemoteException;
 
 }
