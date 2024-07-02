@@ -71,6 +71,11 @@
                   <Label text="Mode de paiement :" />
                </graphic>
             </Label>
+            <Label fx:id="magasinLabel">
+               <graphic>
+                  <Label text="Magasin :" />
+               </graphic>
+            </Label>
          </children>
       </VBox>
    </children>

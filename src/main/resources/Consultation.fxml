@@ -42,6 +42,7 @@
 
     <TableView fx:id="facturesTable" prefHeight="405.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="3">
         <columns>
+            <TableColumn fx:id="magasinColumn" maxWidth="1.7976931348623157E308" text="Magasin" />
             <TableColumn fx:id="clientColumn" maxWidth="1.7976931348623157E308" text="Client" />
             <TableColumn fx:id="idFactureColumn" maxWidth="1.7976931348623157E308" text="ID Facture" />
             <TableColumn fx:id="montantColumn" maxWidth="1.7976931348623157E308" text="Montant" />
@@ -61,7 +62,7 @@
       </GridPane.margin>
    </Button>
    <DatePicker fx:id="datePickerChiffreAffaire" GridPane.rowIndex="6" />
-   <Button onAction="#handleStock" mnemonicParsing="false" text="Ajouter des articles au stock" GridPane.columnIndex="4" GridPane.rowIndex="6" />
+   <Button mnemonicParsing="false" onAction="#handleStock" text="Ajouter des articles au stock" GridPane.columnIndex="4" GridPane.rowIndex="6" />
    <columnConstraints>
       <ColumnConstraints />
       <ColumnConstraints />

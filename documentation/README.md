@@ -66,3 +66,17 @@ Les communications entre les clients et les serveurs sont gérées via Java RMI.
     ```bash
     mvn exec:java@run-main
     ```
+
+## Tâches Cron
+Le projet inclut des scripts pour automatiser certaines tâches de maintenance à l'aide de cron :
+- **Mise à jour des prix** (`update_prices_cron.sh`) : Exécute le script SQL `update_prices.sql` pour mettre à jour les prix des articles à intervalles réguliers.
+- **Sauvegarde des factures** (`backup_factures_cron.sh`) : Exécute le script SQL `backup_factures.sql` pour sauvegarder les factures dans un fichier de backup.
+
+Pour configurer les tâches cron, ajoutez les lignes suivantes à votre crontab :
+```cron
+# Mise à jour des prix tous les jours à minuit
+0 6 * * * /path/to/cron/update_prices_cron.sh
+
+# Sauvegarde des factures tous les jours à 1h du matin
+0 22 * * * /path/to/cron/backup_factures_cron.sh
+```
