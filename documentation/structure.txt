@@ -22,17 +22,17 @@ heptatlon/
 │       │   │   └── IServer.java
 │       │   ├── database/
 │       │   │   └── Seeder.java
-│       │   ├── client/
-│       │   │   ├── service/
-│       │   │   │   └── ClientService.java
-│       │   │   └── controller/
-│       │   │       ├── ConsultationController.java
-│       │   │       ├── ConnexionController.java
-│       │   │       ├── IntroController.java
-│       │   │       ├── StockController.java
-│       │   │       ├── FactureDetailController.java
-│       │   │       └── CommandeController.java
-│       │   └── Main.java
+│       │   └── client/
+│       │       ├── service/
+│       │       │   └── ClientService.java
+│       │       ├── controller/
+│       │       │   ├── ConsultationController.java
+│       │       │   ├── ConnexionController.java
+│       │       │   ├── IntroController.java
+│       │       │   ├── StockController.java
+│       │       │   ├── FactureDetailController.java
+│       │       │   └── CommandeController.java
+│       │       └── Main.java
 │       └── ressources/
 │           ├── Consultation.fxml
 │           ├── Commandes.fxml
