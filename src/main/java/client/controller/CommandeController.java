@@ -30,8 +30,6 @@ public class CommandeController {
     @FXML
     private TextField articleField;
     @FXML
-    private TextField quantiteField;
-    @FXML
     private TextField clientField;
     @FXML
     private TableView<Article> articleTable;

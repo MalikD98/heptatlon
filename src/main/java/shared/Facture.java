@@ -20,7 +20,6 @@ public class Facture implements Serializable {
 
     public Facture() {}
 
-    // Constructeur avec paramètres
     public Facture(int reference, String client, String modePaiement, String magasin, BigDecimal montant, Date dateCreation, Date dateEnregistrement) {
         this.reference = reference;
         this.client = client;

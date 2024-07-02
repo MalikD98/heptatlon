@@ -28,12 +28,6 @@ public class ConsultationController {
     @FXML
     private TextField familleField;
     @FXML
-    private TextField clientIdField;
-    @FXML
-    private TextField articleRefField;
-    @FXML
-    private TextField quantiteField;
-    @FXML
     private TextField factureClientIdField;
     @FXML
     private TableView<Article> stockTable;
