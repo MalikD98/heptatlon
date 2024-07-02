@@ -36,6 +36,8 @@ public class FactureDetailController {
     @FXML
     private Label modePaiementLabel;
     @FXML
+    private Label magasinLabel;
+    @FXML
     private TableView<Article> articlesTable;
     @FXML
     private TableColumn<Article, String> refColumn;
@@ -69,6 +71,7 @@ public class FactureDetailController {
         dateLabel.setText(facture.getDateCreation().toString());
         montantLabel.setText(facture.getMontant().toString());
         modePaiementLabel.setText(facture.getModePaiement());
+        magasinLabel.setText(facture.getMagasin());
 
         List<Article> articles = clientService.getArticlesByFacture(facture.getReference());
         articlesTable.getItems().setAll(articles);

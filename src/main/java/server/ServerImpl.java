@@ -141,9 +141,10 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
 
     @Override
     public List<Facture> consulterFacture(String client) throws RemoteException {
-        String query = "SELECT SUM(montant) montant, fa.* " +
+        String query = "SELECT SUM(montant) montant, fa.*, m.identifiant magasin " +
                 "FROM commandes cmd " +
                 "JOIN factures fa on cmd.facture_reference = fa.reference " +
+                "JOIN magasins m on cmd.magasin_reference = m.reference " +
                 "WHERE fa.client like ?";
         List<Facture> factures = new ArrayList<>();
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -154,6 +155,7 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
                         rs.getInt("reference"),
                         rs.getString("client"),
                         rs.getString("mode_paiement"),
+                        rs.getString("magasin"),
                         rs.getBigDecimal("montant"),
                         rs.getTimestamp("date_creation"),
                         rs.getTimestamp("date_enregistrement")
@@ -168,9 +170,10 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
 
     @Override
     public List<Facture> consulterFactureAll() throws RemoteException {
-        String query = "SELECT SUM(montant) montant, fa.* " +
+        String query = "SELECT SUM(montant) montant, fa.*, m.identifiant magasin " +
                 "FROM commandes cmd " +
                 "JOIN factures fa on cmd.facture_reference = fa.reference " +
+                "JOIN magasins m on cmd.magasin_reference = m.reference " +
                 "group by fa.client";
         List<Facture> factures = new ArrayList<>();
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -180,6 +183,7 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
                         rs.getInt("reference"),
                         rs.getString("client"),
                         rs.getString("mode_paiement"),
+                        rs.getString("magasin"),
                         rs.getBigDecimal("montant"),
                         rs.getTimestamp("date_creation"),
                         rs.getTimestamp("date_enregistrement")

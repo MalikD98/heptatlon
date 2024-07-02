@@ -61,6 +61,8 @@ public class ConsultationController {
     @FXML
     private TableColumn<Facture, String> dateColumn;
     @FXML
+    private TableColumn<Facture, String> magasinColumn;
+    @FXML
     private TableColumn<Facture, Void> actionColumn;
 
     private ClientService clientService;
@@ -83,6 +85,7 @@ public class ConsultationController {
         montantColumn.setCellValueFactory(new PropertyValueFactory<>("montant"));
         modePaiementColumn.setCellValueFactory(new PropertyValueFactory<>("modePaiement"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("dateCreation"));
+        magasinColumn.setCellValueFactory(new PropertyValueFactory<>("magasin"));
 
         actionColumn.setCellFactory(new Callback<TableColumn<Facture, Void>, TableCell<Facture, Void>>() {
             @Override
@@ -106,6 +109,7 @@ public class ConsultationController {
                                     Stage stage = new Stage();
                                     Image image = new Image("icon.png");
                                     stage.getIcons().add(image);
+                                    stage.setTitle("Gestion de Stock et Facturation");
                                     stage.setScene(new Scene(root));
                                     stage.show();
                                 } catch (IOException e) {
