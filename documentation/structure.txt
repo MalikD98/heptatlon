@@ -42,4 +42,5 @@ heptatlon/
 │           ├── Stock.fxml
 │           ├── icon.png
 │           └── logo.mp4
-└─── pom.xml
+├─── pom.xml
+└─── README.md
