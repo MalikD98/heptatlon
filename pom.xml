@@ -69,6 +69,15 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>run-init-db</id>
+                        <configuration>
+                            <mainClass>database.SeederEmpty</mainClass> <!-- Classe principale pour le seeder -->
+                            <classpathScope>compile</classpathScope>
+                            <includePluginDependencies>true</includePluginDependencies>
+                            <includeProjectDependencies>true</includeProjectDependencies>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>run-sync</id>
                         <configuration>
                             <mainClass>client.service.SyncService</mainClass> <!-- Classe principale pour la synchronisation -->
