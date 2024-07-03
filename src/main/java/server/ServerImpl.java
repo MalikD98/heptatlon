@@ -21,7 +21,7 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
     protected ServerImpl() throws RemoteException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/heptathlon", "root", "");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/heptathlon_central", "root", "");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
