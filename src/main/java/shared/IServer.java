@@ -1,8 +1,8 @@
 package shared;
 
+import java.math.BigDecimal;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -58,7 +58,7 @@ public interface IServer extends Remote {
      * @return Factures correspondant au client.
      * @throws RemoteException Si une erreur de communication RMI se produit.
      */
-    List<Facture> consulterFacture(String client) throws RemoteException;
+    List<Facture> consulterFacture(String client, int refMagasin) throws RemoteException;
 
     /**
      * Consulter les articles d'un client facture.
@@ -66,7 +66,7 @@ public interface IServer extends Remote {
      * @return Factures correspondant au client.
      * @throws RemoteException Si une erreur de communication RMI se produit.
      */
-    List<Facture> consulterFactureAll() throws RemoteException;
+    List<Facture> consulterFactureAll(int refMagasin) throws RemoteException;
 
     /**
      * Calculer le chiffre d'affaires pour une date donnée.

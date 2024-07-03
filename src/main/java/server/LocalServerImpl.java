@@ -6,6 +6,7 @@ import shared.Commande;
 import shared.Facture;
 
 import java.math.BigDecimal;
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
@@ -15,10 +16,10 @@ import java.util.List;
 /**
  * Implémentation du serveur.
  */
-public class ServerImpl extends UnicastRemoteObject implements IServer {
+public class LocalServerImpl extends UnicastRemoteObject implements IServer {
     protected Connection conn;
 
-    protected ServerImpl() throws RemoteException {
+    public LocalServerImpl() throws RemoteException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/heptathlon", "root", "");
@@ -27,14 +28,50 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
         }
     }
 
-    @Override
+    /**
+     * Authentifier un utilisateur.
+     *
+     * @param identifiant Identifiant de l'utilisateur.
+     * @param password Mot de passe de l'utilisateur.
+     * @return True si l'authentification réussit, sinon false.
+     * @throws RemoteException Si une erreur de communication RMI se produit.
+     */
     public boolean authenticate(String identifiant, String password) throws RemoteException {
-        return true;
+        String query = "SELECT COUNT(*) FROM magasins WHERE identifiant = ? AND mot_de_passe = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, identifiant);
+            stmt.setString(2, org.apache.commons.codec.digest.DigestUtils.sha256Hex(password));
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
-    @Override
+    /**
+     * Récupère l'id du magasin connecté.
+     *
+     * @param identifiant Identifiant de l'utilisateur.
+     * @return L'id du magasin.
+     * @throws RemoteException Si une erreur de communication RMI se produit.
+     */
     public int getMagasinReference(String identifiant) throws RemoteException {
-        return -1;
+        String query = "SELECT reference FROM magasins WHERE identifiant = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, identifiant);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("reference");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Valeur par défaut en cas d'erreur
     }
 
 
@@ -385,5 +422,34 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
 
         return articles;
     }
-    
+
+    public void syncWithCentralServer() throws Exception {
+        try {
+            IServer centralServer = (IServer) Naming.lookup("rmi://localhost/Central");
+
+            // Synchroniser les articles
+            List<Article> centralArticles = centralServer.consulterStock(1);
+            String clearArticles = "DELETE FROM articles";
+            try (PreparedStatement stmt = conn.prepareStatement(clearArticles)) {
+                stmt.executeUpdate();
+            }
+
+            String insertArticle = "INSERT INTO articles (reference, libelle, famille, prix) VALUES (?, ?, ?, ?)";
+            try (PreparedStatement stmt = conn.prepareStatement(insertArticle)) {
+                for (Article article : centralArticles) {
+                    stmt.setString(1, article.getReference());
+                    stmt.setString(2, article.getLibelle());
+                    stmt.setString(3, article.getFamille());
+                    stmt.setBigDecimal(4, article.getPrix());
+                    stmt.addBatch();
+                }
+                stmt.executeBatch();
+            }
+
+            System.out.println("Synchronisation avec le serveur central terminée.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RemoteException("Erreur lors de la synchronisation avec le serveur central.", e);
+        }
+    }
 }
