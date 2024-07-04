@@ -20,7 +20,7 @@ public class SeederEmpty {
             seedMagasins(conn);
             seedArticles(conn);
             seedStock(conn);
-            System.out.println("Seeding terminé avec succès !");
+            System.out.println("Données des magasins initialisées avec succès !");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -28,7 +28,7 @@ public class SeederEmpty {
             seedMagasins(conn);
             seedArticles(conn);
             seedStock(conn);
-            System.out.println("Seeding terminé avec succès !");
+            System.out.println("Données de la centrale initialisées avec succès !");
         } catch (SQLException e) {
             e.printStackTrace();
         }

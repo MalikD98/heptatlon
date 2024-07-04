@@ -386,4 +386,6 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
         return articles;
     }
     
+    @Override
+    public void syncWithCentralServer() throws RemoteException  {}
 }

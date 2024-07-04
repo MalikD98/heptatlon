@@ -47,7 +47,6 @@ public class CentralBackupService {
             String[] storeNames = registry.list();
             System.out.println("storeNames : " + Arrays.toString(storeNames));
             for (String storeName : storeNames) {
-                System.out.println("StoreName: " + storeName);
                 IServer storeServer = (IServer) registry.lookup(storeName);
                 storeServers.add(storeServer);
             }

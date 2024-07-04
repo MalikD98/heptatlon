@@ -47,6 +47,6 @@ CREATE TABLE IF NOT EXISTS commandes (
      montant DECIMAL(10, 2),      -- Montant total de la facture
      PRIMARY KEY (magasin_reference, article_reference, facture_reference), -- Clé primaire composite
     FOREIGN KEY (magasin_reference) REFERENCES magasins(reference), -- Clé étrangère vers magasins
-    FOREIGN KEY (article_reference) REFERENCES articles(reference), -- Clé étrangère vers articles
-    FOREIGN KEY (facture_reference) REFERENCES factures(reference)  -- Clé étrangère vers factures
+    FOREIGN KEY (facture_reference) REFERENCES factures(reference),  -- Clé étrangère vers factures
+    FOREIGN KEY (article_reference) REFERENCES articles(reference) ON UPDATE CASCADE ON DELETE RESTRICT -- Clé étrangère vers articles
 );

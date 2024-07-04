@@ -163,12 +163,8 @@ public class ConsultationController {
     private void initStockTable() {
         List<Article> articles = clientService.consulterStock();
         stockTable.getItems().clear();
-        if (articles.size() != 0) {
-            for (Article article : articles) {
-                stockTable.getItems().add(article);
-            }
-        } else {
-            showError("Erreur de chargement", "Impossible de charger le stock.");
+        for (Article article : articles) {
+            stockTable.getItems().add(article);
         }
     }
 
@@ -215,12 +211,8 @@ public class ConsultationController {
     private void initFacturesTable() {
         List<Facture> factures = clientService.consulterFacture();
         facturesTable.getItems().clear();
-        if (factures.size() != 0) {
-            for (Facture facture : factures) {
-                facturesTable.getItems().add(facture);
-            }
-        } else {
-            showError("Erreur de chargement", "Impossible de charger les factures.");
+        for (Facture facture : factures) {
+            facturesTable.getItems().add(facture);
         }
     }
 

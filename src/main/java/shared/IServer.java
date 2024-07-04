@@ -121,4 +121,6 @@ public interface IServer extends Remote {
 
     List<Article> getArticlesByFacture(int factureId) throws RemoteException;
 
+    public void syncWithCentralServer() throws RemoteException ;
+
 }

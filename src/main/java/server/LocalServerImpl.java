@@ -423,27 +423,45 @@ public class LocalServerImpl extends UnicastRemoteObject implements IServer {
         return articles;
     }
 
-    public void syncWithCentralServer() throws Exception {
+    @Override
+    public void syncWithCentralServer() throws RemoteException {
         try {
-            IServer centralServer = (IServer) Naming.lookup("rmi://localhost/Central");
+            System.out.println("Début de la synchronisation avec le serveur central\n");
+
+            IServer centralServer = (IServer) Naming.lookup("rmi://localhost:1100/Central");
 
             // Synchroniser les articles
             List<Article> centralArticles = centralServer.consulterStock(1);
-            String clearArticles = "DELETE FROM articles";
-            try (PreparedStatement stmt = conn.prepareStatement(clearArticles)) {
-                stmt.executeUpdate();
-            }
 
-            String insertArticle = "INSERT INTO articles (reference, libelle, famille, prix) VALUES (?, ?, ?, ?)";
-            try (PreparedStatement stmt = conn.prepareStatement(insertArticle)) {
+            // Préparer les requêtes SQL pour mettre à jour et insérer les articles
+            String updateArticle = "UPDATE articles SET prix = ? WHERE reference = ?";
+            String insertArticle = "INSERT INTO articles (libelle, famille, prix) VALUES (?, ?, ?)";
+            String checkArticleExists = "SELECT COUNT(*) FROM articles WHERE reference = ?";
+
+            try (PreparedStatement stmtUpdate = conn.prepareStatement(updateArticle);
+                PreparedStatement stmtInsert = conn.prepareStatement(insertArticle);
+                PreparedStatement stmtCheckExists = conn.prepareStatement(checkArticleExists)) {
+
                 for (Article article : centralArticles) {
-                    stmt.setString(1, article.getReference());
-                    stmt.setString(2, article.getLibelle());
-                    stmt.setString(3, article.getFamille());
-                    stmt.setBigDecimal(4, article.getPrix());
-                    stmt.addBatch();
+                    // Vérifier si l'article existe déjà
+                    stmtCheckExists.setString(1, article.getReference());
+                    ResultSet rs = stmtCheckExists.executeQuery();
+                    rs.next();
+                    boolean articleExists = rs.getInt(1) > 0;
+
+                    if (articleExists) {
+                        // Mettre à jour les champs non contraints de l'article existant
+                        stmtUpdate.setBigDecimal(1, article.getPrix());
+                        stmtUpdate.setString(2, article.getReference());
+                        stmtUpdate.executeUpdate();
+                    } else {
+                        // Insérer un nouvel article
+                        stmtInsert.setString(1, article.getLibelle());
+                        stmtInsert.setString(2, article.getFamille());
+                        stmtInsert.setBigDecimal(3, article.getPrix());
+                        stmtInsert.executeUpdate();
+                    }
                 }
-                stmt.executeBatch();
             }
 
             System.out.println("Synchronisation avec le serveur central terminée.");
@@ -452,4 +470,5 @@ public class LocalServerImpl extends UnicastRemoteObject implements IServer {
             throw new RemoteException("Erreur lors de la synchronisation avec le serveur central.", e);
         }
     }
+
 }

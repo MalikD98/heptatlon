@@ -80,7 +80,7 @@
                     <execution>
                         <id>run-sync</id>
                         <configuration>
-                            <mainClass>client.service.SyncService</mainClass> <!-- Classe principale pour la synchronisation -->
+                            <mainClass>client.SyncService</mainClass> <!-- Classe principale pour la synchronisation -->
                             <classpathScope>compile</classpathScope>
                             <includePluginDependencies>true</includePluginDependencies>
                             <includeProjectDependencies>true</includeProjectDependencies>
