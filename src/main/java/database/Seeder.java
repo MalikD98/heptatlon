@@ -11,6 +11,7 @@ import java.util.Map;
 
 public class Seeder {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/heptathlon";
+    private static final String DB_CENTRAL_URL = "jdbc:mysql://localhost:3306/heptathlon_central";
     private static final String USER = "root";
     private static final String PASS = "";
 
@@ -22,6 +23,14 @@ public class Seeder {
             seedFactures(conn);
             seedCommandes(conn);
             System.out.println("Seeding terminé avec succès !");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try (Connection conn = DriverManager.getConnection(DB_CENTRAL_URL, USER, PASS)) {
+            seedMagasins(conn);
+            seedArticles(conn);
+            seedStock(conn);
+            System.out.println("Données de la centrale initialisées avec succès !");
         } catch (SQLException e) {
             e.printStackTrace();
         }

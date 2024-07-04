@@ -1,9 +1,11 @@
 heptatlon/
 ├── database/
 │   ├── init_db.sql
+│   ├── init_central_db.sql
 │   ├── update_prices.sql
 │   └── backup_factures.sql
 ├── cron/
+│   ├── sync.bat
 │   ├── update_prices_task.sh
 │   └── backup_factures_task.sh
 ├── documentation/
@@ -13,6 +15,9 @@ heptatlon/
 │   └── main/
 │       ├── java/
 │       │   ├── server/
+│       │   │   ├── CentralBackupService.java
+│       │   │   ├── LocalServer.java
+│       │   │   ├── LocalServerImpl.java
 │       │   │   ├── Server.java
 │       │   │   └── ServerImpl.java
 │       │   ├── shared/
@@ -21,26 +26,28 @@ heptatlon/
 │       │   │   ├── Facture.java
 │       │   │   └── IServer.java
 │       │   ├── database/
-│       │   │   └── Seeder.java
+│       │   │   ├── Seeder.java
+│       │   │   └── SeederEmpty.java
 │       │   └── client/
+│       │       ├── controller/
+│       │       │   ├── CommandeController.java
+│       │       │   ├── ConnexionController.java
+│       │       │   ├── ConsultationController.java
+│       │       │   ├── FactureDetailController.java
+│       │       │   ├── IntroController.java
+│       │       │   └── StockController.java
 │       │       ├── service/
 │       │       │   └── ClientService.java
-│       │       ├── controller/
-│       │       │   ├── ConsultationController.java
-│       │       │   ├── ConnexionController.java
-│       │       │   ├── IntroController.java
-│       │       │   ├── StockController.java
-│       │       │   ├── FactureDetailController.java
-│       │       │   └── CommandeController.java
+│       │       ├── SyncService.java
 │       │       └── Main.java
 │       └── ressources/
-│           ├── Consultation.fxml
+│           ├── logo.mp4
 │           ├── Commandes.fxml
-│           ├── Intro.fxml
-│           ├── FactureDetail.fxml
 │           ├── Connexion.fxml
-│           ├── Stock.fxml
+│           ├── Consultation.fxml
+│           ├── FactureDetail.fxml
 │           ├── icon.png
-│           └── logo.mp4
+│           ├── Intro.fxml
+│           └── Stock.fxml
 ├─── pom.xml
 └─── README.md
