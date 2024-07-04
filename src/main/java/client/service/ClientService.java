@@ -131,7 +131,7 @@ public class ClientService {
      */
     public List<Facture> consulterFacture(String clientId) {
         try {
-            return server.consulterFacture(clientId);
+            return server.consulterFacture(clientId, magasinReference);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -145,7 +145,7 @@ public class ClientService {
      */
     public List<Facture> consulterFacture() {
         try {
-            return server.consulterFactureAll();
+            return server.consulterFactureAll(magasinReference);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

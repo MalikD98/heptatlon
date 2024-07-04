@@ -42,6 +42,15 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>run-local-server</id>
+                        <configuration>
+                            <mainClass>server.LocalServer</mainClass> <!-- Classe principale pour le serveur -->
+                            <classpathScope>compile</classpathScope>
+                            <includePluginDependencies>true</includePluginDependencies>
+                            <includeProjectDependencies>true</includeProjectDependencies>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>run-server</id>
                         <configuration>
                             <mainClass>server.Server</mainClass> <!-- Classe principale pour le serveur -->
@@ -54,6 +63,33 @@
                         <id>run-seeder</id>
                         <configuration>
                             <mainClass>database.Seeder</mainClass> <!-- Classe principale pour le seeder -->
+                            <classpathScope>compile</classpathScope>
+                            <includePluginDependencies>true</includePluginDependencies>
+                            <includeProjectDependencies>true</includeProjectDependencies>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>run-init-db</id>
+                        <configuration>
+                            <mainClass>database.SeederEmpty</mainClass> <!-- Classe principale pour le seeder -->
+                            <classpathScope>compile</classpathScope>
+                            <includePluginDependencies>true</includePluginDependencies>
+                            <includeProjectDependencies>true</includeProjectDependencies>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>run-sync</id>
+                        <configuration>
+                            <mainClass>client.SyncService</mainClass> <!-- Classe principale pour la synchronisation -->
+                            <classpathScope>compile</classpathScope>
+                            <includePluginDependencies>true</includePluginDependencies>
+                            <includeProjectDependencies>true</includeProjectDependencies>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>run-send-factures</id>
+                        <configuration>
+                            <mainClass>server.CentralBackupService</mainClass> <!-- Classe principale pour la synchronisation -->
                             <classpathScope>compile</classpathScope>
                             <includePluginDependencies>true</includePluginDependencies>
                             <includeProjectDependencies>true</includeProjectDependencies>
@@ -116,6 +152,25 @@
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.15</version>
+        </dependency>
+        <!-- Dépendances JUnit 5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>3.12.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>3.12.4</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

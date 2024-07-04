@@ -6,6 +6,7 @@ import shared.Commande;
 import shared.Facture;
 
 import java.math.BigDecimal;
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
@@ -15,26 +16,62 @@ import java.util.List;
 /**
  * Implémentation du serveur.
  */
-public class ServerImpl extends UnicastRemoteObject implements IServer {
+public class LocalServerImpl extends UnicastRemoteObject implements IServer {
     protected Connection conn;
 
-    protected ServerImpl() throws RemoteException {
+    public LocalServerImpl() throws RemoteException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/heptathlon_central", "root", "");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/heptathlon", "root", "");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
 
-    @Override
+    /**
+     * Authentifier un utilisateur.
+     *
+     * @param identifiant Identifiant de l'utilisateur.
+     * @param password Mot de passe de l'utilisateur.
+     * @return True si l'authentification réussit, sinon false.
+     * @throws RemoteException Si une erreur de communication RMI se produit.
+     */
     public boolean authenticate(String identifiant, String password) throws RemoteException {
-        return true;
+        String query = "SELECT COUNT(*) FROM magasins WHERE identifiant = ? AND mot_de_passe = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, identifiant);
+            stmt.setString(2, org.apache.commons.codec.digest.DigestUtils.sha256Hex(password));
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
-    @Override
+    /**
+     * Récupère l'id du magasin connecté.
+     *
+     * @param identifiant Identifiant de l'utilisateur.
+     * @return L'id du magasin.
+     * @throws RemoteException Si une erreur de communication RMI se produit.
+     */
     public int getMagasinReference(String identifiant) throws RemoteException {
-        return -1;
+        String query = "SELECT reference FROM magasins WHERE identifiant = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, identifiant);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("reference");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Valeur par défaut en cas d'erreur
     }
 
 
@@ -142,7 +179,6 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
                         rs.getInt("reference"),
                         rs.getString("client"),
                         rs.getString("mode_paiement"),
-                        rs.getString("magasin"),
                         rs.getBigDecimal("montant"),
                         rs.getTimestamp("date_creation"),
                         rs.getTimestamp("date_enregistrement")
@@ -178,7 +214,6 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
                         rs.getInt("reference"),
                         rs.getString("client"),
                         rs.getString("mode_paiement"),
-                        rs.getString("magasin"),
                         rs.getBigDecimal("montant"),
                         rs.getTimestamp("date_creation"),
                         rs.getTimestamp("date_enregistrement")
@@ -384,9 +419,56 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
             e.printStackTrace();
             throw new RemoteException("Erreur lors de la récupération des articles de la facture.", e);
         }
+
         return articles;
     }
-    
+
     @Override
-    public void syncWithCentralServer() throws RemoteException  {}
+    public void syncWithCentralServer() throws RemoteException {
+        try {
+            System.out.println("Début de la synchronisation avec le serveur central\n");
+
+            IServer centralServer = (IServer) Naming.lookup("rmi://localhost:1100/Central");
+
+            // Synchroniser les articles
+            List<Article> centralArticles = centralServer.consulterStock(1);
+
+            // Préparer les requêtes SQL pour mettre à jour et insérer les articles
+            String updateArticle = "UPDATE articles SET prix = ? WHERE reference = ?";
+            String insertArticle = "INSERT INTO articles (libelle, famille, prix) VALUES (?, ?, ?)";
+            String checkArticleExists = "SELECT COUNT(*) FROM articles WHERE reference = ?";
+
+            try (PreparedStatement stmtUpdate = conn.prepareStatement(updateArticle);
+                PreparedStatement stmtInsert = conn.prepareStatement(insertArticle);
+                PreparedStatement stmtCheckExists = conn.prepareStatement(checkArticleExists)) {
+
+                for (Article article : centralArticles) {
+                    // Vérifier si l'article existe déjà
+                    stmtCheckExists.setString(1, article.getReference());
+                    ResultSet rs = stmtCheckExists.executeQuery();
+                    rs.next();
+                    boolean articleExists = rs.getInt(1) > 0;
+
+                    if (articleExists) {
+                        // Mettre à jour les champs non contraints de l'article existant
+                        stmtUpdate.setBigDecimal(1, article.getPrix());
+                        stmtUpdate.setString(2, article.getReference());
+                        stmtUpdate.executeUpdate();
+                    } else {
+                        // Insérer un nouvel article
+                        stmtInsert.setString(1, article.getLibelle());
+                        stmtInsert.setString(2, article.getFamille());
+                        stmtInsert.setBigDecimal(3, article.getPrix());
+                        stmtInsert.executeUpdate();
+                    }
+                }
+            }
+
+            System.out.println("Synchronisation avec le serveur central terminée.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RemoteException("Erreur lors de la synchronisation avec le serveur central.", e);
+        }
+    }
+
 }
