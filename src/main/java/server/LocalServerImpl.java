@@ -179,6 +179,7 @@ public class LocalServerImpl extends UnicastRemoteObject implements IServer {
                         rs.getInt("reference"),
                         rs.getString("client"),
                         rs.getString("mode_paiement"),
+                        rs.getString("magasin"),
                         rs.getBigDecimal("montant"),
                         rs.getTimestamp("date_creation"),
                         rs.getTimestamp("date_enregistrement")
@@ -214,6 +215,7 @@ public class LocalServerImpl extends UnicastRemoteObject implements IServer {
                         rs.getInt("reference"),
                         rs.getString("client"),
                         rs.getString("mode_paiement"),
+                        rs.getString("magasin"),
                         rs.getBigDecimal("montant"),
                         rs.getTimestamp("date_creation"),
                         rs.getTimestamp("date_enregistrement")
@@ -228,15 +230,13 @@ public class LocalServerImpl extends UnicastRemoteObject implements IServer {
 
     @Override
     public BigDecimal calculerChiffreAffaires(String date, int refMagasin) throws RemoteException {
-        String query = "SELECT SUM(montant) AS chiffre_affaires, fa.client " +
+        String query = "SELECT SUM(montant) AS chiffre_affaires " +
                 "FROM commandes cmd " +
                 "JOIN factures fa on cmd.facture_reference = fa.reference " +
-                "WHERE DATE(date_creation) = ? " +
-                "and cmd.magasin_reference = ? " +
-                "group by fa.client";
+                "WHERE DATE(date_creation) = ? ";
+
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, date);
-            stmt.setInt(2, refMagasin);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return rs.getBigDecimal("chiffre_affaires");

@@ -6,10 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="355b5ef4-f9df-4fd6-b85f-36ca5038cf88" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/client/service/ClientService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/client/service/ClientService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/server/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/server/Server.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/server/ServerImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/server/ServerImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/server/CentralBackupService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/CentralBackupService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/client/controller/ConsultationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/controller/ConsultationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/LocalServerImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/LocalServerImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +42,7 @@
   "keyToString": {
     "Application.Main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "hf__server",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/malik/Desktop/MIAGE-M1/Ingénierie logicielle/Activite2/visualvm_217/bin/visualvm.exe",
     "node.js.detected.package.eslint": "true",
