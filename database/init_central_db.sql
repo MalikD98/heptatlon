@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS factures (
     client VARCHAR(255),         -- Nom du client
     mode_paiement VARCHAR(50),   -- Mode de paiement utilisé
     date_creation DATETIME DEFAULT CURRENT_TIMESTAMP, -- Date de création de la facture
-    date_enregistrement DATETIME DEFAULT NULL         -- Date d'enregistrement de la facture
+    date_enregistrement DATETIME DEFAULT CURRENT_TIMESTAMP         -- Date d'enregistrement de la facture
 );
 
 -- Création de la table Commandes

@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CentralBackupService {
@@ -19,7 +20,7 @@ public class CentralBackupService {
     public CentralBackupService() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/heptathlon", "root", "");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/heptathlon_central", "root", "");
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Échec de la connexion à la base de données centrale.");
@@ -28,8 +29,10 @@ public class CentralBackupService {
 
     public void backupFacturesFromAllStores() {
         List<IServer> storeServers = getStoreServers();
+        System.out.println("StoreServers: " + storeServers);
         for (IServer storeServer : storeServers) {
             List<Facture> factures = getFacturesFromStore(storeServer);
+            System.out.println("Les factures ici : " + factures);
             for (Facture facture : factures) {
                 insertFactureInCentralDB(facture);
             }
@@ -40,9 +43,11 @@ public class CentralBackupService {
     private List<IServer> getStoreServers() {
         List<IServer> storeServers = new ArrayList<>();
         try {
-            Registry registry = LocateRegistry.getRegistry("localhost", 1100);
+            Registry registry = LocateRegistry.getRegistry("localhost", 1099);
             String[] storeNames = registry.list();
+            System.out.println("storeNames : " + Arrays.toString(storeNames));
             for (String storeName : storeNames) {
+                System.out.println("StoreName: " + storeName);
                 IServer storeServer = (IServer) registry.lookup(storeName);
                 storeServers.add(storeServer);
             }
@@ -53,9 +58,10 @@ public class CentralBackupService {
         return storeServers;
     }
 
+
     private List<Facture> getFacturesFromStore(IServer storeServer) {
         try {
-            return storeServer.consulterFactureAll(0); // 0 pour récupérer toutes les factures
+            return storeServer.consulterFactureAll(1); // 0 pour récupérer toutes les factures
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Erreur lors de la récupération des factures depuis le magasin.");
@@ -64,14 +70,12 @@ public class CentralBackupService {
     }
 
     private void insertFactureInCentralDB(Facture facture) {
-        String insertFacture = "INSERT INTO factures (reference, client, mode_paiement, montant, date_creation, date_enregistrement) VALUES (?, ?, ?, ?, ?, ?)";
+        String insertFacture = "INSERT INTO factures (reference, client, mode_paiement, date_creation) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(insertFacture)) {
             stmt.setInt(1, facture.getReference());
             stmt.setString(2, facture.getClient());
             stmt.setString(3, facture.getModePaiement());
-            stmt.setBigDecimal(4, facture.getMontant());
-            stmt.setTimestamp(5, new Timestamp(facture.getDateCreation().getTime()));
-            stmt.setTimestamp(6, new Timestamp(facture.getDateEnregistrement().getTime()));
+            stmt.setTimestamp(4, new Timestamp(facture.getDateCreation().getTime()));
             stmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
